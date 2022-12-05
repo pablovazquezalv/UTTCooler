@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="250dp"
+    android:background="@color/black">
+
+
+    <com.github.lzyzsd.circleprogress.DonutProgress
+        android:id="@+id/donaprogresosadafruit"
+        android:layout_width="141dp"
+        android:layout_height="144dp"
+        app:donut_circle_starting_degree="@integer/material_motion_duration_medium_2"
+        app:donut_finished_color="@color/black"
+        app:donut_progress="0"
+        app:donut_text_color="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.728"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titulosensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SENSOR"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/donutprogress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

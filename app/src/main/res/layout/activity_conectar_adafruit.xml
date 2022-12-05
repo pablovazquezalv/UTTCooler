@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/whatsapp_image_2022_12_01_at_12_43_35_pm"
+    tools:context="app.ConectarAdafruit">
+
+
+    <EditText
+        android:id="@+id/usuarioadruit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="Usuario"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <EditText
+        android:id="@+id/contraseñasend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="194dp"
+        android:ems="10"
+        android:hint="Nombre de tu Red"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btnconecta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ioKey" />
+
+    <EditText
+        android:id="@+id/ioKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="ioKey"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usuarioadruit"
+        app:layout_constraintVertical_bias="0.104" />
+
+    <Button
+        android:id="@+id/btnconecta"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="conectar"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ioKey"
+        app:layout_constraintVertical_bias="0.389" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="266dp"
+        android:layout_height="117dp"
+        android:text="¿Que es mi iokey?
+                 tu iokey es el toke generado
+                  en adafruit para saber como
+                  conseguirlo ve al siguiente link"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnconecta"
+        app:layout_constraintVertical_bias="0.532" />
+
+    <Button
+        android:id="@+id/linkiokeyinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="iokey link"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.788" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
