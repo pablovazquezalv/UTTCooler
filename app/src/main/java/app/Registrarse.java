@@ -17,9 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import app.singleton.Singleton;
 
@@ -92,8 +92,6 @@ public class Registrarse extends AppCompatActivity {
                 String urllogin="http://192.168.0.9:8000/api/reg";
 
                 JSONObject jsonbody= new JSONObject();
-                JSONObject array= new JSONObject();
-
                 try {
                     jsonbody.put("name",inputnombre.getText());
                     jsonbody.put("email",inputcorreo.getText());
@@ -110,20 +108,25 @@ public class Registrarse extends AppCompatActivity {
                 {
                     e.printStackTrace();
                 }
-                try {
-                    array.put("users",jsonbody);
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+
+
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urllogin,jsonbody, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response)
                     {
-                        Toast.makeText(Registrarse.this, "jalo", Toast.LENGTH_SHORT).show();
+                        try {
+                          int status= Integer.parseInt(response.getString("status"));
 
 
-                          // startActivity(new Intent(getApplicationContext(), CodigoTel.class));
+                          if(status==201)
+                          {
+                              Toast.makeText(Registrarse.this, "Cuenta Creada"+status, Toast.LENGTH_SHORT).show();
+                              startActivity(new Intent(getApplicationContext(), CodigoTel.class));
+                          }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 

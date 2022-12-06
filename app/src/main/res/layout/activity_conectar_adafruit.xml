@@ -26,19 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.035" />
 
-    <EditText
-        android:id="@+id/contraseñasend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="194dp"
-        android:ems="10"
-        android:hint="Nombre de tu Red"
-        android:inputType="textPersonName"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/btnconecta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ioKey" />
-
+ ¿
     <EditText
         android:id="@+id/ioKey"
         android:layout_width="match_parent"

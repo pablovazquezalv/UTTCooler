@@ -53,12 +53,14 @@
         app:layout_constraintVertical_bias="0.065" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/codigodeverificacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0000"
+        android:hint="0000"
+        android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="30dp"
+        android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +78,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/codigodeverificacion"
         app:layout_constraintVertical_bias="0.132" />
 </androidx.constraintlayout.widget.ConstraintLayout>

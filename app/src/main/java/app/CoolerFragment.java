@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,7 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -76,7 +79,7 @@ public class CoolerFragment extends Fragment
     //METODO PARA OBTENER HIELERAS
     public void ObtenerHieleras()
     {
-        String urldashboard="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards?x-aio-key=aio_MHEd17XhEuDEUSrDrXVMJX6DjXkG";
+        String urldashboard="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards";
 
         JsonArrayRequest request = new JsonArrayRequest(urldashboard, new Response.Listener<JSONArray>() {
             @Override
@@ -107,9 +110,17 @@ public class CoolerFragment extends Fragment
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
-        requestQueue.add(request);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-AIO-Key", "aio_nXhY61Wh8shPTDSCaoBtDli3dDP2");
 
+                return headers;
+            }
+
+        };
+        requestQueue.add(request);
 
     }
 
@@ -120,6 +131,7 @@ public class CoolerFragment extends Fragment
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1,GridLayoutManager.HORIZONTAL,false));
         recyclerView.setAdapter(adaptadorHielera);
     }
+
 
 }
 
