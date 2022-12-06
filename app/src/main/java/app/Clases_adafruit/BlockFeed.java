@@ -6,7 +6,7 @@ public class BlockFeed {
 
     public String username;
     public String name;
-    public String last_value;
+    public String value;
 
     public String getUsername() {
         return username;
@@ -24,11 +24,11 @@ public class BlockFeed {
         this.name = name;
     }
 
-    public String getLast_value() {
-        return last_value;
+    public String getValue() {
+        return value;
     }
 
-    public void setLast_value(String last_value) {
-        this.last_value = last_value;
+    public void setvalue(String value) {
+        this.value = value;
     }
 }

@@ -5,29 +5,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.lzyzsd.circleprogress.DonutProgress;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 import app.Clases_adafruit.BlockFeed;
-import app.Clases_adafruit.Feed;
+import app.HieleraInformacion;
 
 public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyViewHolder> {
 
     private Context context;
     private List<BlockFeed> datossensores;
 
-
     public AdaptadorSensor(Context context,List<BlockFeed> datossensores)
     {
 
         this.datossensores=datossensores;
     }
-
 
     @NonNull
     @Override
@@ -39,6 +46,8 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
     @Override
     public void onBindViewHolder(@NonNull AdaptadorSensor.MyViewHolder holder, int position) {
         holder.setData(datossensores.get(position));
+
+
     }
 
     @Override
@@ -48,21 +57,27 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-         TextView txtsensor;
-      //   DonutProgress donutProgress;
+         TextView txtsensor,txtdatos;
+        DonutProgress donutProgress;
 
 
         public MyViewHolder(final View itemView) {
             super(itemView);
            txtsensor=itemView.findViewById(R.id.titulosensor);
-            //donutProgress=itemView.findViewById(R.id.donaprogresosadafruit);
+       //   txtdatos=itemView.findViewById(R.id.txtdatos);
+           donutProgress=itemView.findViewById(R.id.donaprogresosadafruit);
+
 
         }
         public void setData(BlockFeed sensores)
         {
-
             txtsensor.setText(sensores.getName());
-            //donutProgress.setDonut_progress(sensores.getLast_value());
+            donutProgress.setText(sensores.getValue());
+         //   txtdatos.setText(sensores.getValue());
+            String valor="60";
+
+
+            donutProgress.setDonut_progress(valor);
         }
     }
 }

@@ -114,7 +114,7 @@ public class CoolerFragment extends Fragment
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_nXhY61Wh8shPTDSCaoBtDli3dDP2");
+                headers.put("X-AIO-Key", "aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ");
 
                 return headers;
             }

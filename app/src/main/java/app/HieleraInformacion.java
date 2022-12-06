@@ -25,7 +25,6 @@ import java.util.List;
 
 import app.Adaptadores.AdaptadorSensor;
 import app.Clases_adafruit.Hielera;
-import app.Clases_adafruit.Feed;
 import app.Clases_adafruit.BlockFeed;
 import app.singleton.Singleton;
 
@@ -34,11 +33,10 @@ public class HieleraInformacion extends AppCompatActivity {
     //HIELERA NOMBRE
     private Hielera hielera;
     TextView txtinfo,txtkey;
-    String dashboards,feedkey;
+    String dashboards,feedkey,sensornombre;
     //PARA SENSORES
     private RecyclerView recyclerView;
     private List<BlockFeed> sensoresList;
-    private List<Feed> infoSensorList;
     private RequestQueue requestQueue;
     AdaptadorSensor adapter;
 
@@ -49,11 +47,7 @@ public class HieleraInformacion extends AppCompatActivity {
 
         requestQueue = Singleton.getInstance(HieleraInformacion.this).getRequestQueue();
         sensoresList = new ArrayList<>();
-        infoSensorList= new ArrayList<>();
-
         recyclerView=findViewById(R.id.recyclerView);
-
-
         txtinfo=findViewById(R.id.informacion);
 
         //ENVIAR EL NOMBRE DE LA HIELERA O CARRITO
@@ -63,41 +57,83 @@ public class HieleraInformacion extends AppCompatActivity {
         Toast.makeText(this, "si"+dashboards, Toast.LENGTH_SHORT).show();
 
        informacionSobreHieleraEnEspecial();
+       // lasData();
     }
 
     public void informacionSobreHieleraEnEspecial()
     {
-        String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks?x-aio-key=aio_MHEd17XhEuDEUSrDrXVMJX6DjXkG";
+        String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks?x-aio-key=aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONArray response) {
-
+            public void onResponse(JSONArray response)
+            {
                 JSONObject jsonObject;
                 for(int i=0;i<response.length();i++)
                 {
                     try
                     {
                         jsonObject=response.getJSONObject(i);
-                        BlockFeed sensoress = new BlockFeed();
-                        sensoress.setLast_value(jsonObject.getString("last_value"));
-                       // feedkey=jsonObject.getString("name");
-                        sensoresList.add(sensoress);
+                        BlockFeed hielerass = new BlockFeed();
+                        hielerass.setName(jsonObject.getString("name"));
+                        sensornombre = jsonObject.getString("name");
+                        //sensoresList.add(hielerass);
+                        lasData(sensornombre);
                     } catch (JSONException e)
                     {
                         e.printStackTrace();
                     }
-
                 }
-                setRecyclewView(sensoresList);
             }
+
         }, new Response.ErrorListener()
         {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+            }
+        });
+        requestQueue.add(request);
+
+    }
+
+    public void lasData(String sensornombre)
+    {
+        String urllasdata ="https://io.adafruit.com/api/v2/PVPabloVZ/feeds/"+sensornombre+"/data/last?x-aio-key=aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ";
+
+        JsonObjectRequest requestdos = new JsonObjectRequest(Request.Method.GET, urllasdata, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                try {
+                    //response.getString("last_value");
+                    BlockFeed hielerass = new BlockFeed();
+                    hielerass.setName(sensornombre);
+                    hielerass.setvalue(response.getString("value"));
+                   // Toast.makeText(HieleraInformacion.this, "valor"+response, Toast.LENGTH_SHORT).show();
+                    sensoresList.add(hielerass);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+               setRecyclewView(sensoresList);
+            }
+
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
         });
-        requestQueue.add(request);
+        requestQueue.add(requestdos);
+
+    }
+
+    //INSTANCIAR RECYLCEW VIEW CON ADAPTADOR
+    private void setRecyclewView(List<BlockFeed> sensoresList)
+    {
+        AdaptadorSensor adaptadorSensor = new AdaptadorSensor(getApplicationContext(),sensoresList);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false));
+        recyclerView.setAdapter(adaptadorSensor);
     }
 
     public void Array()
@@ -109,7 +145,7 @@ public class HieleraInformacion extends AppCompatActivity {
             {
 
                 try {
-                   // JSONObject jsonObject;
+                    // JSONObject jsonObject;
                     JSONObject c= response.getJSONObject(0);
                     JSONArray ca= c.getJSONArray("block_feeds");
                     for(int i=0;i<ca.length();i++)
@@ -171,14 +207,6 @@ public class HieleraInformacion extends AppCompatActivity {
 
 
     }
-    //INSTANCIAR RECYLCEW VIEW CON ADAPTADOR
-    private void setRecyclewView(List<BlockFeed> sensoresList)
-    {
-        AdaptadorSensor adaptadorSensor = new AdaptadorSensor(getApplicationContext(),sensoresList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false));
-        recyclerView.setAdapter(adaptadorSensor);
-    }
-
    /* public void getListResult()
     {
         String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+name+"/blocks?x-aio-key=aio_MHEd17XhEuDEUSrDrXVMJX6DjXkG";
