@@ -1,5 +1,6 @@
 package app;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,17 +8,28 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.UTTCOOLER.Integradora.R;
+import com.bumptech.glide.Glide;
 
 
 public class HomeFragment extends Fragment {
 
 
+
+private ImageView imageView;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view= inflater.inflate(R.layout.fragment_home, container, false);
+
+        imageView=view.findViewById(R.id.gif);
+        String url="https://cdn.homecrux.com/wp-content/uploads/2017/06/autonomous-follow-me-cooler.gif";
+        Uri urlparse= Uri.parse(url);
+        Glide.with(getContext()).load(urlparse).into(imageView);
+
+        return view;
     }
+
 }

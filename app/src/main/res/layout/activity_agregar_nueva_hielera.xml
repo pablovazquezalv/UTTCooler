@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/whatsapp_image_2022_12_01_at_12_43_35_pm"
+    android:background="@color/blackmedium"
     tools:context="app.AgregarNuevaHielera">
 
     <TextView

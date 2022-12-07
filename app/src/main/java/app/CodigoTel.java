@@ -60,13 +60,11 @@ public class CodigoTel extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             int status= Integer.parseInt(response.getString("status"));
-
                             if(status==201)
                             {
-                                Toast.makeText( CodigoTel.this, "Codigo correcto"+status, Toast.LENGTH_SHORT).show();
+                                Toast.makeText( CodigoTel.this, "TU CUENTA FUE ACTIVADA INICIA SESION"+status, Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), Login.class));
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

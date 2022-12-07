@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.035" />
 
- ¿
+
     <EditText
         android:id="@+id/ioKey"
         android:layout_width="match_parent"
@@ -42,7 +42,41 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usuarioadruit"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.071" />
+
+    <EditText
+        android:id="@+id/nombredered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="Nombre Red"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnconecta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ioKey"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <EditText
+        android:id="@+id/contrared"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="Contraseña Red"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnconecta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombredered"
+        app:layout_constraintVertical_bias="0.333" />
 
     <Button
         android:id="@+id/btnconecta"
@@ -56,19 +90,16 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ioKey"
-        app:layout_constraintVertical_bias="0.389" />
+        app:layout_constraintVertical_bias="0.461" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="266dp"
         android:layout_height="117dp"
-        android:text="¿Que es mi iokey?
-                 tu iokey es el toke generado
-                  en adafruit para saber como
-                  conseguirlo ve al siguiente link"
+        android:text="¿Que es mi iokey? tu iokey es el toke generadoen adafruit para saber como conseguirlo ve al siguiente link"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

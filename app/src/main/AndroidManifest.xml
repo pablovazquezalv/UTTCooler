@@ -32,13 +32,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="app.DatosCooler"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name="app.ConectarAdafruit"
             android:exported="false">
             <meta-data

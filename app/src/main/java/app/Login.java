@@ -63,18 +63,11 @@ public class Login extends AppCompatActivity {
                     retorno=false;
                 }
 
-               /* if( ! TextUtils.isEmpty(email) && ! TextUtils.isEmpty(password))
-                {
-                    startActivity(new Intent(getApplicationContext(), Menus.class));
-                }else
-                {
-                    Toast.makeText(Login.this, "Credenciales Incorrectas", Toast.LENGTH_SHORT).show();
-                }*/
-              String urllogin =  "http://192.168.0.9:8000/api/in";
-
+              String urllogin =  "http://192.168.254.33:8000/api/in";
 
                 JSONObject jsonbody= new JSONObject();
-                try {
+                try
+                {
                     jsonbody.put("email",correo.getText());
                     jsonbody.put("password",contraseña.getText());
                 } catch (JSONException e)
@@ -84,39 +77,39 @@ public class Login extends AppCompatActivity {
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urllogin, jsonbody, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-
-                     /*  try {
+                    public void onResponse(JSONObject response)
+                    {
+                       try {
                             int status= Integer.parseInt(response.getString("status"));
-                    */
-                           int status=200;
+                         //  int status=200;
                             if(status==200)
                             {
                                 Toast.makeText( Login.this, "Credenciales"+response, Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), Menus.class));
                             }
-
-                      /*  } catch (JSONException e) {
+                       } catch (JSONException e) {
                             e.printStackTrace();
-                        }*/
+                        }
                     }
-                }, new Response.ErrorListener() {
+                }, new Response.ErrorListener()
+                {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( Login.this, "FALLO"+error, Toast.LENGTH_SHORT).show();
-
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Toast.makeText( Login.this, "Necesitas Activar tu cuenta"+error, Toast.LENGTH_SHORT).show();
                     }
                 });
                 requestQueue.add(request);
-
             }
         });
 
         //BOTON PARA CREAR CUENTA LO REDIRIGE AL ACTIVITY DE CREAR UNA
         botoncrearcuenta=(Button) findViewById(R.id.crearcuenta);
-        botoncrearcuenta.setOnClickListener(new View.OnClickListener() {
+        botoncrearcuenta.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 startActivity(new Intent(getApplicationContext(), Registrarse.class));
 
             }
@@ -124,7 +117,8 @@ public class Login extends AppCompatActivity {
 
         //BOTON SIN CUENTA LO REDIRIGE A MENUS SIN TENER UNA CUENTA
         botonsincuenta=(Button) findViewById(R.id.btnsincuenta);
-        botonsincuenta.setOnClickListener(new View.OnClickListener() {
+        botonsincuenta.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Menus.class));

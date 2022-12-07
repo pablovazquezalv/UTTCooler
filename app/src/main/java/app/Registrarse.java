@@ -89,7 +89,7 @@ public class Registrarse extends AppCompatActivity {
                     return;
                 }
 
-                String urllogin="http://192.168.0.9:8000/api/reg";
+                String urllogin="http://192.168.254.33:8000/api/reg";
 
                 JSONObject jsonbody= new JSONObject();
                 try {
@@ -117,24 +117,25 @@ public class Registrarse extends AppCompatActivity {
                         try {
                           int status= Integer.parseInt(response.getString("status"));
 
-
                           if(status==201)
                           {
-                              Toast.makeText(Registrarse.this, "Cuenta Creada"+status, Toast.LENGTH_SHORT).show();
+                              Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion"+status, Toast.LENGTH_SHORT).show();
                               startActivity(new Intent(getApplicationContext(), CodigoTel.class));
                           }
 
-                        } catch (JSONException e) {
+                        } catch (JSONException e)
+                        {
                             e.printStackTrace();
                         }
-
                     }
 
-                }, new Response.ErrorListener() {
+                }, new Response.ErrorListener()
+                {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(VolleyError error)
+                    {
 
-                        Toast.makeText(Registrarse.this, "fallo"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Registrarse.this, "Credenciales fallidas"+error, Toast.LENGTH_SHORT).show();
                     }
                 });
                 

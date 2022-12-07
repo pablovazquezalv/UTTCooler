@@ -107,14 +107,16 @@ public class CoolerFragment extends Fragment
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
 
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ");
+                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
 
                 return headers;
             }

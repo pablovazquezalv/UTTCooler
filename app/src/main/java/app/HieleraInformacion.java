@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,7 +22,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.Adaptadores.AdaptadorSensor;
 import app.Clases_adafruit.Hielera;
@@ -62,7 +65,7 @@ public class HieleraInformacion extends AppCompatActivity {
 
     public void informacionSobreHieleraEnEspecial()
     {
-        String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks?x-aio-key=aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ";
+        String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
@@ -92,14 +95,25 @@ public class HieleraInformacion extends AppCompatActivity {
             {
 
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
+
+                return headers;
+            }
+
+        };
         requestQueue.add(request);
 
     }
 
     public void lasData(String sensornombre)
     {
-        String urllasdata ="https://io.adafruit.com/api/v2/PVPabloVZ/feeds/"+sensornombre+"/data/last?x-aio-key=aio_lPZI95L5rxxgRpIoQyaPMI20MrwJ";
+        String urllasdata ="https://io.adafruit.com/api/v2/PVPabloVZ/feeds/"+sensornombre+"/data/last";
 
         JsonObjectRequest requestdos = new JsonObjectRequest(Request.Method.GET, urllasdata, null, new Response.Listener<JSONObject>() {
             @Override
@@ -123,7 +137,18 @@ public class HieleraInformacion extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
+
+                return headers;
+            }
+
+        };
+
         requestQueue.add(requestdos);
 
     }
