@@ -2,11 +2,16 @@ package app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,39 +27,63 @@ import org.json.JSONObject;
 
 import app.singleton.Singleton;
 
-//CLASE DEL LOGEO
+
 public class Login extends AppCompatActivity {
 
     private RequestQueue requestQueue;
-    //VARIABLES MAS QUE OBVIAS
+
     EditText correo,contraseña;
     Button botoniniciarsesion,botoncrearcuenta,botonsincuenta;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    CheckBox checkBox;
+    String llave="sesion";
+    String email;
+
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final  String KEY_NAME="name";
+    private static final  String KEY_ID="id";
+    private static final String KEY_EMAIL="email";
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         requestQueue = Singleton.getInstance(Login.this).getRequestQueue();
-        //--------------CASTEO----------------------------
-        correo=(EditText) findViewById(R.id.usuario);
-        contraseña=(EditText) findViewById(R.id.contraseña);
+        correo=findViewById(R.id.usuario);
+        contraseña= findViewById(R.id.contraseña);
+        checkBox=findViewById(R.id.checkBox);
+        botoniniciarsesion= findViewById(R.id.iniciarsesion);
+        botoncrearcuenta=findViewById(R.id.crearcuenta);
+        botonsincuenta=findViewById(R.id.btnsincuenta);
 
 
-        //BOTON DE INICIAR SESION
-        botoniniciarsesion=(Button) findViewById(R.id.iniciarsesion);
+        preferences=this.getSharedPreferences(SHARE_PREF_KEY,MODE_PRIVATE);
+        editor=preferences.edit();
+
+        if(revisarSesion())
+        {
+            startActivity(new Intent(getApplicationContext(), Menus.class));
+        }
+
+
         botoniniciarsesion.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                guardaSesion(checkBox.isChecked());
                 boolean retorno=true;
-                String email=correo.getText().toString().trim();
-                String password=contraseña.getText().toString().trim();
 
+                 email=correo.getText().toString().trim();
+                String password=contraseña.getText().toString().trim();
                 if(TextUtils.isEmpty(email))
                 {
-                    correo.setError("El nombre es requerido");
+                    correo.setError("El correo es requerido");
                     retorno=false;
                 }
                 if(TextUtils.isEmpty(password))
@@ -63,31 +92,42 @@ public class Login extends AppCompatActivity {
                     retorno=false;
                 }
 
-              String urllogin =  "http://192.168.254.33:8000/api/in";
 
-                JSONObject jsonbody= new JSONObject();
+                String urllogin =  "https://gallant-fermat.143-198-158-11.plesk.page/api/in";
+
+                JSONObject jsoniniciarsesion= new JSONObject();
                 try
                 {
-                    jsonbody.put("email",correo.getText());
-                    jsonbody.put("password",contraseña.getText());
+                    jsoniniciarsesion.put("email",correo.getText());
+                    jsoniniciarsesion.put("password",contraseña.getText());
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
-
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urllogin, jsonbody, new Response.Listener<JSONObject>() {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urllogin, jsoniniciarsesion, new Response.Listener<JSONObject>()
+                {
                     @Override
                     public void onResponse(JSONObject response)
                     {
                        try {
+
+                           String nombre =response.getString("user_name");
+                           String id =response.getString("id");
+                           response.getString("access_token");
+                           SharedPreferences.Editor editor = preferences.edit();
+                           editor.putString(KEY_NAME,nombre);
+                           editor.putString(KEY_ID,id);
+                           editor.apply();
+
                             int status= Integer.parseInt(response.getString("status"));
-                         //  int status=200;
                             if(status==200)
                             {
                                 Toast.makeText( Login.this, "Credenciales"+response, Toast.LENGTH_SHORT).show();
+                                guardaSesion(checkBox.isChecked());
                                 startActivity(new Intent(getApplicationContext(), Menus.class));
                             }
-                       } catch (JSONException e) {
+                       } catch (JSONException e)
+                       {
                             e.printStackTrace();
                         }
                     }
@@ -103,8 +143,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //BOTON PARA CREAR CUENTA LO REDIRIGE AL ACTIVITY DE CREAR UNA
-        botoncrearcuenta=(Button) findViewById(R.id.crearcuenta);
+
         botoncrearcuenta.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -115,15 +154,27 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //BOTON SIN CUENTA LO REDIRIGE A MENUS SIN TENER UNA CUENTA
-        botonsincuenta=(Button) findViewById(R.id.btnsincuenta);
+
         botonsincuenta.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 startActivity(new Intent(getApplicationContext(), Menus.class));
 
             }
         });
+    }
+
+
+    public void guardaSesion(boolean checked)
+    {
+        editor.putBoolean(llave,checked);
+        editor.apply();
+    }
+
+    public boolean revisarSesion()
+    {   return this.preferences.getBoolean(llave,false);
+
     }
 }

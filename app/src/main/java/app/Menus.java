@@ -4,15 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.UTTCOOLER.Integradora.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.ramiro174.controlbluetooth.Views.ControlLogic;
 
-//ESTE ES EL MENU CON INFORMACION, ES EL QUE MUESTRA EL PERFIL,MISHIELERAS,EL CONTROL Y EL INICIO
+
 public class Menus extends AppCompatActivity {
 
     //BOTON NAVEGACION QUE ES LA BARRRA DE ABAJO
@@ -28,7 +30,10 @@ public class Menus extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menus);
-
+        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT)
+        {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         //CASTEO DE LA BARRA DE NAVEGACION
         bottomNavigationView = findViewById(R.id.botton_navegation);
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,homeFragment).commit();
@@ -37,31 +42,30 @@ public class Menus extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 //SE COMPONE POR ID QUE SE AGARRA DE MENU=MENU
                 //EL ID DE LA PANTALLA INICIO ES ESTE
-                if (item.getItemId() == R.id.home) {
+                if (item.getItemId() == R.id.home)
+                {
                     getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, homeFragment).commit();
                     return true;
                 }
                 //EL DEL CARRITO O COOLER O HIELERA
-                if (item.getItemId() == R.id.carrito) {
+                if (item.getItemId() == R.id.carrito)
+                {
                     getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, coolerFragment).commit();
                     return true;
                 }
                 //EL DEL CONTROL
-                if (item.getItemId() == R.id.control) {
+                if (item.getItemId() == R.id.control)
+                {
                     startActivity(new Intent(getApplicationContext(), ControlLogic.class));
                     // getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, carFragment).commit();
                     return true;
                 }
                 //Y EL DEL PERFIL
-                if (item.getItemId() == R.id.perfil) {
-
+                if (item.getItemId() == R.id.perfil)
+                {
                     getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, perfilFragment).commit();
-
-
-                    // getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, carFragment).commit();
                     return true;
                 }
                 return false;

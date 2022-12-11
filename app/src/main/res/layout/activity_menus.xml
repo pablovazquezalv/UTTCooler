@@ -8,22 +8,36 @@
     tools:context="app.Menus">
 
     <FrameLayout
+        android:id="@+id/contenedor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/contenedor"
-        android:layout_above="@id/botton_navegation"/>
+        android:layout_above="@id/botton_navegation" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botton_navegation"
         android:layout_width="match_parent"
-        android:layout_height="71dp"
-        app:itemIconSize="20dp"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        android:layout_height="81dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/black"
+        android:layout_marginBottom="27dp"
+        android:background="@color/white"
+        android:fontFamily="sans-serif-condensed-medium"
+        app:itemIconSize="20dp"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/menu_button" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/aux"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_below="@+id/contenedor"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="75dp"
+
+
+        android:layout_marginBottom="-1dp"
+        android:background="@color/white" />
 
 
 </RelativeLayout>

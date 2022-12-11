@@ -2,9 +2,12 @@ package app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class HieleraInformacion extends AppCompatActivity {
     //HIELERA NOMBRE
     private Hielera hielera;
     TextView txtinfo,txtkey;
+    Button boton;
     String dashboards,feedkey,sensornombre;
     //PARA SENSORES
     private RecyclerView recyclerView;
@@ -52,18 +56,18 @@ public class HieleraInformacion extends AppCompatActivity {
         sensoresList = new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         txtinfo=findViewById(R.id.informacion);
-
+        boton=findViewById(R.id.boton);
         //ENVIAR EL NOMBRE DE LA HIELERA O CARRITO
         hielera= (Hielera) getIntent().getExtras().getSerializable("datos");
         txtinfo.setText(hielera.getName());
          dashboards=hielera.getName();
-        Toast.makeText(this, "si"+dashboards, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards, Toast.LENGTH_SHORT).show();
 
-       informacionSobreHieleraEnEspecial();
+       informacionSobreHieleraEnEspecial(dashboards);
        // lasData();
     }
 
-    public void informacionSobreHieleraEnEspecial()
+    public void informacionSobreHieleraEnEspecial(String dashboards)
     {
         String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -79,7 +83,9 @@ public class HieleraInformacion extends AppCompatActivity {
                         BlockFeed hielerass = new BlockFeed();
                         hielerass.setName(jsonObject.getString("name"));
                         sensornombre = jsonObject.getString("name");
-                        //sensoresList.add(hielerass);
+
+
+                       // sensoresList.add(hielerass);
                         lasData(sensornombre);
                     } catch (JSONException e)
                     {
@@ -101,7 +107,7 @@ public class HieleraInformacion extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
+                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
 
                 return headers;
             }
@@ -120,12 +126,13 @@ public class HieleraInformacion extends AppCompatActivity {
             public void onResponse(JSONObject response)
             {
                 try {
-                    //response.getString("last_value");
+
                     BlockFeed hielerass = new BlockFeed();
                     hielerass.setName(sensornombre);
                     hielerass.setvalue(response.getString("value"));
-                   // Toast.makeText(HieleraInformacion.this, "valor"+response, Toast.LENGTH_SHORT).show();
-                    sensoresList.add(hielerass);
+                   Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
+
+                   sensoresList.add(hielerass);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -142,7 +149,7 @@ public class HieleraInformacion extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
+                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
 
                 return headers;
             }
@@ -157,7 +164,8 @@ public class HieleraInformacion extends AppCompatActivity {
     private void setRecyclewView(List<BlockFeed> sensoresList)
     {
         AdaptadorSensor adaptadorSensor = new AdaptadorSensor(getApplicationContext(),sensoresList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adaptadorSensor);
     }
 

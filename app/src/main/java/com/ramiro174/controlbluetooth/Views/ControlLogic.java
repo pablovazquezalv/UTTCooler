@@ -50,11 +50,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import app.Custom_Dialog;
 import app.singleton.Singleton;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-public class ControlLogic extends AppCompatActivity implements AdapterView.OnItemSelectedListener,Custom_Dialog.CustomDialogInterface {
+public class ControlLogic extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
 
     //BATERIA
@@ -64,8 +63,6 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
     private RequestQueue requestQueue;
 
     //CUSTOM DIALOG
-    TextView TxtViewNombreRed,TxtViewContraseña,TxtViewIokey,TxtViewUsuario;
-
 
     //BLUETOOTH
     TextView txtblue, mBluetoothStatus, mTextViewAngleRight, mTextViewStrengthRight, mTextViewCoordinateRight;
@@ -96,11 +93,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //CUSTOM DIALOG
-        TxtViewNombreRed=findViewById(R.id.wifi);
-        TxtViewContraseña=findViewById(R.id.contraseña);
-        TxtViewIokey=findViewById(R.id.iokey);
-        TxtViewUsuario=findViewById(R.id.usuarioadafruit);
+
 
         //BATERIA
         requestQueue = Singleton.getInstance(ControlLogic.this).getRequestQueue();
@@ -112,17 +105,6 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
         SpnListaBluetooth = (Spinner) findViewById(R.id.SpnListaBluetooth);
 
         ListaBluetooth = new ArrayList<>();
-        btnconectar = (Switch) findViewById(R.id.btnconectar);
-        btnconectar.setOnCheckedChangeListener((v,i) -> {
-            if(!mBluetoothAdapter.isEnabled()) {
-                bluetoothOn();
-            }
-        });
-        if (mBluetoothAdapter.isEnabled()) {
-            btnconectar.setChecked(true);
-        } else {
-            btnconectar.setChecked(false);
-        }
 
 
         listPairedDevices();
@@ -334,20 +316,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
         return device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
     }
 
-    public void openDialog(View view)
-    {
-        Custom_Dialog custom_dialog= new Custom_Dialog();
-        custom_dialog.show(getSupportFragmentManager(),"Text");
-    }
-
-    @Override
-    public void appTexts(String recibonombre, String recibocontraseña,String reciboiokey,String recibousuario)
-    {
-        TxtViewNombreRed.setText(recibonombre);
-        TxtViewContraseña.setText(recibocontraseña);
-        TxtViewIokey.setText(reciboiokey);
-        TxtViewUsuario.setText(recibousuario);
 
 
-    }
+
 }

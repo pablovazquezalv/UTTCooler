@@ -3,9 +3,11 @@ package app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,19 +35,19 @@ public class Registrarse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         requestQueue = Singleton.getInstance(Registrarse.this).getRequestQueue();
 
-        inputnombre=(EditText) findViewById(R.id.nombre);
-        inputapellido=(EditText) findViewById(R.id.apellidos);
-        inputtelefono=(EditText) findViewById(R.id.telefono);
-        inputcontrasena=(EditText) findViewById(R.id.contraseña);
-        inputcorreo=(EditText) findViewById(R.id.correoelectronico);
-        inputusuario=(EditText) findViewById(R.id.usuario);
-       // inputred=(EditText) findViewById(R.id.red);
-      //  inputcontraseña=(EditText) findViewById(R.id.contraseñared);
-       // inputiokey=(EditText) findViewById(R.id.activekey);
+        inputnombre=findViewById(R.id.nombre);
+        inputapellido=findViewById(R.id.apellidos);
+        inputtelefono=findViewById(R.id.telefono);
+        inputcontrasena= findViewById(R.id.contraseña);
+        inputcorreo= findViewById(R.id.correoelectronico);
+        inputusuario=findViewById(R.id.usuario);
 
         btncrearcuenta=(Button) findViewById(R.id.crearcuenta);
+
         btncrearcuenta.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -56,9 +58,7 @@ public class Registrarse extends AppCompatActivity {
                 String contrasena=inputcontrasena.getText().toString().trim();
                 String correo=inputcorreo.getText().toString().trim();
                 String usuario=inputusuario.getText().toString().trim();
-              //  String nombrered=inputred.getText().toString().trim();
-               // String contrared=inputcontraseña.getText().toString().trim();
-              //  String iokey=inputiokey.getText().toString().trim();
+
                 if(TextUtils.isEmpty(nombre))
                 {
                     inputnombre.setError("El nombre es requerido");
@@ -71,7 +71,7 @@ public class Registrarse extends AppCompatActivity {
                 }
                 if(TextUtils.isEmpty(telefono))
                 {
-                    inputtelefono.setError("El telefeno es requerido");
+                    inputtelefono.setError("El telefono es requerido");
                     return;
                 }
                 if(TextUtils.isEmpty(contrasena))
@@ -89,7 +89,7 @@ public class Registrarse extends AppCompatActivity {
                     return;
                 }
 
-                String urllogin="http://192.168.254.33:8000/api/reg";
+                String urlregistrarse="https://gallant-fermat.143-198-158-11.plesk.page/api/reg";
 
                 JSONObject jsonbody= new JSONObject();
                 try {
@@ -110,19 +110,17 @@ public class Registrarse extends AppCompatActivity {
                 }
 
 
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urllogin,jsonbody, new Response.Listener<JSONObject>() {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlregistrarse,jsonbody, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response)
                     {
                         try {
                           int status= Integer.parseInt(response.getString("status"));
-
                           if(status==201)
                           {
                               Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion"+status, Toast.LENGTH_SHORT).show();
                               startActivity(new Intent(getApplicationContext(), CodigoTel.class));
                           }
-
                         } catch (JSONException e)
                         {
                             e.printStackTrace();
@@ -134,15 +132,10 @@ public class Registrarse extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-
                         Toast.makeText(Registrarse.this, "Credenciales fallidas"+error, Toast.LENGTH_SHORT).show();
                     }
                 });
-                
                 requestQueue.add(request);
-
-
-
             }
         });
     }

@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="150dp"
-    android:background="@color/blackmedium">
+    >
 
     <Button
         android:id="@+id/idnombreadafruit"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="120dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/naranjafondo"
         android:text=""
         android:textColor="@color/white"
         android:textSize="15dp"
+        android:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.088"

@@ -4,11 +4,15 @@ import static android.widget.Toast.makeText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,36 +29,47 @@ import org.json.JSONObject;
 
 import app.singleton.Singleton;
 
-//CONECTAR CON ADAFRUIT, PARA ESO ES NECESARIO IOKEY Y EL USERNAME
+
 public class ConectarAdafruit extends AppCompatActivity {
-    //EDITEXT DE DONDDE SE AGARRARA LA INFORMACION
+
     EditText usuariodeadafruitIOKEY,nombredeusuarioadafruit,nombrewifi,contrasenawifi;
     Button buttonconectar;
     private RequestQueue requestQueue;
-    //URL DE INFORMACION SOBRE EL IOKEY
-    //BOTON DE INFORMACION PARA SABER QUE ES EL IOKEY  Y COMO CONSEGUIRLO
+
     Button iokeybutton;
     String urlinfo="https://learn.adafruit.com/welcome-to-adafruit-io/securing-your-io-account";
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final  String KEY_ID="id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conectar_adafruit);
         requestQueue = Singleton.getInstance(ConectarAdafruit.this).getRequestQueue();
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         //CLAVE IOKEY
         usuariodeadafruitIOKEY=findViewById(R.id.ioKey);
         nombredeusuarioadafruit=findViewById(R.id.usuarioadruit);
         nombrewifi=findViewById(R.id.nombredered);
         contrasenawifi=findViewById(R.id.contrared);
-        //BOTON DE IOKEY CONECTARSE
         buttonconectar=findViewById(R.id.btnconecta);
+        iokeybutton=findViewById(R.id.linkiokeyinfo);
 
-        buttonconectar.setOnClickListener(new View.OnClickListener() {
+        preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
+        String id= preferences.getString(KEY_ID,null);
+
+        editor=preferences.edit();
+
+        buttonconectar.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
-
                 boolean retorno=true;
+
                 String nombreadafruit=nombredeusuarioadafruit.getText().toString().trim();
                 String iokey=usuariodeadafruitIOKEY.getText().toString().trim();
 
@@ -68,7 +83,8 @@ public class ConectarAdafruit extends AppCompatActivity {
                     usuariodeadafruitIOKEY.setError("El iokey es requerido");
                     retorno=false;
                 }
-                String urlactualizariokeyyuser ="http://192.168.254.33:8000/api/user/14";
+
+                String urlactualizariokeyyuser="https://gallant-fermat.143-198-158-11.plesk.page/api/user/"+id;
                 JSONObject jsonbody= new JSONObject();
                 try {
                     jsonbody.put("Active_Key",usuariodeadafruitIOKEY.getText());
@@ -99,9 +115,7 @@ public class ConectarAdafruit extends AppCompatActivity {
             }
         });
 
-
-        //BOTON PARA IR A LA INFORMACION SOBRE EL IOKEY
-        iokeybutton=findViewById(R.id.linkiokeyinfo);
+        //IR A PAGINA WEB
         iokeybutton.setOnClickListener(new View.OnClickListener()
         {
             @Override

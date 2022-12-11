@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,9 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
 
     @Override
     public void onBindViewHolder(@NonNull AdaptadorSensor.MyViewHolder holder, int position) {
+
         holder.setData(datossensores.get(position));
+
 
 
     }
@@ -57,27 +60,28 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-         TextView txtsensor,txtdatos;
+         TextView txtsensor,txtdatos,txtled;
+         Button button;
         DonutProgress donutProgress;
 
 
         public MyViewHolder(final View itemView) {
             super(itemView);
            txtsensor=itemView.findViewById(R.id.titulosensor);
-       //   txtdatos=itemView.findViewById(R.id.txtdatos);
+           txtdatos=itemView.findViewById(R.id.txtdatos);
            donutProgress=itemView.findViewById(R.id.donaprogresosadafruit);
 
-
         }
+
         public void setData(BlockFeed sensores)
         {
             txtsensor.setText(sensores.getName());
             donutProgress.setText(sensores.getValue());
-         //   txtdatos.setText(sensores.getValue());
+            txtdatos.setText(sensores.getValue());
             String valor="60";
 
 
-            donutProgress.setDonut_progress(valor);
+            //   donutProgress.setDonut_progress(valor);
         }
     }
 }

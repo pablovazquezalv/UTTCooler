@@ -68,6 +68,7 @@
         </activity>
         <activity
             android:name="app.Login"
+            android:theme="@style/Theme.AppCompat.NoActionBarAndStatusBae"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

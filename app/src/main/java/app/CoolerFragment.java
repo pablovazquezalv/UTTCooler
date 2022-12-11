@@ -1,6 +1,7 @@
 package app;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -51,16 +53,15 @@ public class CoolerFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        //INFLACION DEL FRAGMENTO PARA PODER TRABAJAR
-        View view= inflater.inflate(R.layout.fragment_cooler, container, false);
-        Button btnhielera=view.findViewById(R.id.hielera);
 
-        //CREACION DE LA PETICION Y DE LA LISTA
+        View view= inflater.inflate(R.layout.fragment_cooler, container, false);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        Button btnhielera=view.findViewById(R.id.hielera);
         requestQueue = Singleton.getInstance(view.getContext()).getRequestQueue();
         hieleraList = new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerView);
         ObtenerHieleras();
-
 
         //BOTON DE IR A AGREGAR UNA HIELERA NUEVA
         btnhielera.setOnClickListener(new View.OnClickListener()
@@ -73,8 +74,6 @@ public class CoolerFragment extends Fragment
         });
         return view;
     }
-
-
 
     //METODO PARA OBTENER HIELERAS
     public void ObtenerHieleras()
@@ -94,7 +93,6 @@ public class CoolerFragment extends Fragment
                         Hielera hielerass = new Hielera();
                         jsonObject.getString("id");
                         hielerass.setName(jsonObject.getString("name"));
-                      //  hielerass.setName(jsonObject.getString("visibility"));
                         hieleraList.add(hielerass);
                     } catch (JSONException e)
                     {
@@ -116,7 +114,7 @@ public class CoolerFragment extends Fragment
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_TXSJ47NEPecX4kB7T4556z8VhCdd");
+                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
 
                 return headers;
             }
