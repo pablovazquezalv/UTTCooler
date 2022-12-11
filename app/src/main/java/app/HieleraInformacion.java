@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,29 +49,42 @@ public class HieleraInformacion extends AppCompatActivity {
     private RequestQueue requestQueue;
     AdaptadorSensor adapter;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hielera_informacion);
-
         requestQueue = Singleton.getInstance(HieleraInformacion.this).getRequestQueue();
+
         sensoresList = new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         txtinfo=findViewById(R.id.informacion);
         boton=findViewById(R.id.boton);
-        //ENVIAR EL NOMBRE DE LA HIELERA O CARRITO
+
+        preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
+        String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
+        String iokey= preferences.getString(KEY_IOKEY,null);
+        editor=preferences.edit();
+
+        //ENVIAR INFORMACION ENTRE ACTIVITYS
         hielera= (Hielera) getIntent().getExtras().getSerializable("datos");
         txtinfo.setText(hielera.getName());
          dashboards=hielera.getName();
-        Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
 
-       informacionSobreHieleraEnEspecial(dashboards);
+       informacionSobreHieleraEnEspecial(usernameadafruit,dashboards,iokey);
        // lasData();
     }
 
-    public void informacionSobreHieleraEnEspecial(String dashboards)
+    public void informacionSobreHieleraEnEspecial(String usernameadafruit,String dashboards,String iokey)
     {
-        String url="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards/"+dashboards+"/blocks";
+        String url="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards/"+dashboards+"/blocks";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
@@ -84,9 +99,8 @@ public class HieleraInformacion extends AppCompatActivity {
                         hielerass.setName(jsonObject.getString("name"));
                         sensornombre = jsonObject.getString("name");
 
-
                        // sensoresList.add(hielerass);
-                        lasData(sensornombre);
+                        lasData(usernameadafruit,sensornombre,iokey);
                     } catch (JSONException e)
                     {
                         e.printStackTrace();
@@ -107,7 +121,7 @@ public class HieleraInformacion extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
+                headers.put("X-AIO-Key", iokey);
 
                 return headers;
             }
@@ -117,9 +131,9 @@ public class HieleraInformacion extends AppCompatActivity {
 
     }
 
-    public void lasData(String sensornombre)
+    public void lasData(String usernameadafruit,String sensornombre,String iokey)
     {
-        String urllasdata ="https://io.adafruit.com/api/v2/PVPabloVZ/feeds/"+sensornombre+"/data/last";
+        String urllasdata ="https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/"+sensornombre+"/data/last";
 
         JsonObjectRequest requestdos = new JsonObjectRequest(Request.Method.GET, urllasdata, null, new Response.Listener<JSONObject>() {
             @Override
@@ -149,7 +163,7 @@ public class HieleraInformacion extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
+                headers.put("X-AIO-Key", iokey);
 
                 return headers;
             }

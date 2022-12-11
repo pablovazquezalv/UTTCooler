@@ -42,10 +42,16 @@ public class ConectarAdafruit extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private static final String SHARE_PREF_KEY="mypref";
-    private static final  String KEY_ID="id";
+    private static final String KEY_ID="id";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
+
+    String Active_Key;
+    String Username;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conectar_adafruit);
         requestQueue = Singleton.getInstance(ConectarAdafruit.this).getRequestQueue();
@@ -60,7 +66,6 @@ public class ConectarAdafruit extends AppCompatActivity {
 
         preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String id= preferences.getString(KEY_ID,null);
-
         editor=preferences.edit();
 
         buttonconectar.setOnClickListener(new View.OnClickListener()
@@ -100,7 +105,11 @@ public class ConectarAdafruit extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response)
                     {
-                            Toast.makeText( ConectarAdafruit.this, "Se actualizaron sus credenciales", Toast.LENGTH_SHORT).show();
+
+                        editor.putString(KEY_USERADAFRUIT,nombreadafruit);
+                        editor.apply();
+                        editor.putString(KEY_IOKEY,nombredeusuarioadafruit.getText().toString());
+                        Toast.makeText( ConectarAdafruit.this, "Se actualizaron sus credenciales"+nombreadafruit, Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener()
                 {

@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.singleton.Singleton;
@@ -37,8 +38,14 @@ public class PerfilFragment extends Fragment {
     SharedPreferences.Editor editor;
     private static final String SHARE_PREF_KEY="mypref";
     private static final  String KEY_NAME="name";
-    private static final  String KEY_ID="id";
-    private static final String KEY_EMAIL="email";
+    private static final String KEY_ID="id";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
+
+    String nombren;
+    String telefono;
+    String Active_Key;
+    String Username;
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
@@ -51,35 +58,40 @@ public class PerfilFragment extends Fragment {
 
         Button btnconectar=view.findViewById(R.id.conectaradafruit);
         Button btncerrarsesion = view.findViewById(R.id.cerrarsesion);
+
         TextView nombreuser=view.findViewById(R.id.nombreuser);
+        TextView iokey=view.findViewById(R.id.ioKeyuser);
+        TextView user=view.findViewById(R.id.usuarioada);
 
         preferences= getActivity().getSharedPreferences(SHARE_PREF_KEY,Context.MODE_PRIVATE);
-        String name= preferences.getString(KEY_NAME,null);
-
-        nombreuser.setText("Hola "+name+" !");
+        String id= preferences.getString(KEY_ID,null);
         editor=preferences.edit();
 
-        btncerrarsesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putBoolean("sesion",false);
-                editor.apply();
-                Toast.makeText(getContext(), "la sesion fue cerrada", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(),Login.class));
-
-            }
-        });
-
-
-
-
-
-        String url="https://io.adafruit.com/api/v2/user?x-aio-key=aio_nQAG347kXorcI4m1jTXf3EfwUhUY";
-
+        //DATOS DEL USUARIO
+        String url="https://gallant-fermat.143-198-158-11.plesk.page/api/users/"+id;
      JsonObjectRequest peticion = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response)
             {
+                try {
+
+                     nombren =response.getJSONObject("data").getString("name");
+                    nombreuser.setText("Hola "+nombren+" !");
+
+                     Active_Key =response.getJSONObject("data").getString("Active_Key");
+                    iokey.setText(""+Active_Key);
+                     Username =response.getJSONObject("data").getString("Username");
+                    user.setText(""+Username);
+
+                    editor.putString(KEY_USERADAFRUIT,Username);
+                    editor.putString(KEY_IOKEY,Active_Key);
+                    editor.apply();
+                    Toast.makeText(getContext(), "datos"+Username, Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         }, new Response.ErrorListener()
@@ -99,6 +111,19 @@ public class PerfilFragment extends Fragment {
             public void onClick(View view) {
                 Intent i= new Intent(getActivity(),ConectarAdafruit.class);
                 startActivity(i);
+            }
+        });
+
+        btncerrarsesion.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                editor.putBoolean("sesion",false);
+                editor.apply();
+                Toast.makeText(getContext(), "la sesion fue cerrada", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(),Login.class));
+
             }
         });
         return view;

@@ -39,12 +39,13 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor editor;
     CheckBox checkBox;
     String llave="sesion";
-    String email;
 
+    String nombre;
+    String id;
     private static final String SHARE_PREF_KEY="mypref";
     private static final  String KEY_NAME="name";
-    private static final  String KEY_ID="id";
-    private static final String KEY_EMAIL="email";
+    private static final String KEY_ID="id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,13 +55,8 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         requestQueue = Singleton.getInstance(Login.this).getRequestQueue();
-        correo=findViewById(R.id.usuario);
-        contraseña= findViewById(R.id.contraseña);
-        checkBox=findViewById(R.id.checkBox);
-        botoniniciarsesion= findViewById(R.id.iniciarsesion);
-        botoncrearcuenta=findViewById(R.id.crearcuenta);
-        botonsincuenta=findViewById(R.id.btnsincuenta);
 
+        init();
 
         preferences=this.getSharedPreferences(SHARE_PREF_KEY,MODE_PRIVATE);
         editor=preferences.edit();
@@ -70,7 +66,6 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Menus.class));
         }
 
-
         botoniniciarsesion.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -79,7 +74,7 @@ public class Login extends AppCompatActivity {
                 guardaSesion(checkBox.isChecked());
                 boolean retorno=true;
 
-                 email=correo.getText().toString().trim();
+                String email=correo.getText().toString().trim();
                 String password=contraseña.getText().toString().trim();
                 if(TextUtils.isEmpty(email))
                 {
@@ -92,6 +87,7 @@ public class Login extends AppCompatActivity {
                     retorno=false;
                 }
 
+                SharedPreferences.Editor editor = preferences.edit();
 
                 String urllogin =  "https://gallant-fermat.143-198-158-11.plesk.page/api/in";
 
@@ -111,17 +107,15 @@ public class Login extends AppCompatActivity {
                     {
                        try {
 
-                           String nombre =response.getString("user_name");
-                           String id =response.getString("id");
-                           response.getString("access_token");
-                           SharedPreferences.Editor editor = preferences.edit();
-                           editor.putString(KEY_NAME,nombre);
-                           editor.putString(KEY_ID,id);
-                           editor.apply();
-
                             int status= Integer.parseInt(response.getString("status"));
                             if(status==200)
                             {
+                                String nombren =response.getString("user_name");
+                                 String id=response.getString("user_id");
+                                //response.getString("access_token");
+                                editor.putString(KEY_NAME,nombren);
+                              editor.putString(KEY_ID,id);
+                                editor.apply();
                                 Toast.makeText( Login.this, "Credenciales"+response, Toast.LENGTH_SHORT).show();
                                 guardaSesion(checkBox.isChecked());
                                 startActivity(new Intent(getApplicationContext(), Menus.class));
@@ -140,7 +134,9 @@ public class Login extends AppCompatActivity {
                     }
                 });
                 requestQueue.add(request);
+
             }
+
         });
 
 
@@ -176,5 +172,15 @@ public class Login extends AppCompatActivity {
     public boolean revisarSesion()
     {   return this.preferences.getBoolean(llave,false);
 
+    }
+
+    private void init()
+    {
+        correo=findViewById(R.id.usuario);
+        contraseña= findViewById(R.id.contraseña);
+        checkBox=findViewById(R.id.checkBox);
+        botoniniciarsesion= findViewById(R.id.iniciarsesion);
+        botoncrearcuenta=findViewById(R.id.crearcuenta);
+        botonsincuenta=findViewById(R.id.btnsincuenta);
     }
 }

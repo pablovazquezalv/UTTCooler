@@ -1,6 +1,8 @@
 package app;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
 import com.android.volley.AuthFailureError;
@@ -48,8 +51,15 @@ public class CoolerFragment extends Fragment
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private List<Hielera> hieleraList;
-    TextView txtdatos;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
+
+
+    String iokey;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -57,17 +67,26 @@ public class CoolerFragment extends Fragment
         View view= inflater.inflate(R.layout.fragment_cooler, container, false);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+        preferences= getActivity().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
+        String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
+        String iokey= preferences.getString(KEY_IOKEY,null);
+        editor=preferences.edit();
+
+        Toast.makeText(getContext(), "username:"+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
+
         Button btnhielera=view.findViewById(R.id.hielera);
         requestQueue = Singleton.getInstance(view.getContext()).getRequestQueue();
         hieleraList = new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerView);
-        ObtenerHieleras();
+        ObtenerHieleras(usernameadafruit,iokey);
+
 
         //BOTON DE IR A AGREGAR UNA HIELERA NUEVA
         btnhielera.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent i= new Intent(getActivity(),AgregarNuevaHielera.class);
                 startActivity(i);
             }
@@ -76,9 +95,9 @@ public class CoolerFragment extends Fragment
     }
 
     //METODO PARA OBTENER HIELERAS
-    public void ObtenerHieleras()
+    public void ObtenerHieleras(String usernameadafruit,String iokey)
     {
-        String urldashboard="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards";
+        String urldashboard="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards";
 
         JsonArrayRequest request = new JsonArrayRequest(urldashboard, new Response.Listener<JSONArray>() {
             @Override
@@ -114,7 +133,7 @@ public class CoolerFragment extends Fragment
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", "aio_XFUo90yIlP2kXKhTaMZ38iDnxGkF");
+                headers.put("X-AIO-Key",iokey);
 
                 return headers;
             }
