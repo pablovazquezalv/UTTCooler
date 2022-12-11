@@ -65,7 +65,7 @@ public class HieleraInformacion extends AppCompatActivity {
         sensoresList = new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         txtinfo=findViewById(R.id.informacion);
-        boton=findViewById(R.id.boton);
+
 
         preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);

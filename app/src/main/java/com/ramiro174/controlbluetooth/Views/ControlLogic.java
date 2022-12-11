@@ -138,6 +138,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
 
         joystickRight.setOnMoveListener(new JoystickView.OnMoveListener()
         {
+
             @SuppressLint("DefaultLocale")
             @Override
             public void onMove(int angle, int strength) {
@@ -169,6 +170,8 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
 
     private void updateProgressBar()
     {
+
+
         String urlbateria="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards?x-aio-key=aio_FfGV79J3FlMrFWskm0YLmEIdQ6qg";
 
 

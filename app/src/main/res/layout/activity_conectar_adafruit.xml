@@ -123,9 +123,9 @@
         android:id="@+id/textView6"
         android:layout_width="266dp"
         android:layout_height="117dp"
-        android:textAlignment="center"
         android:background="@drawable/style_bordes"
         android:text="¿Que es mi iokey? tu iokey es el toke generadoen adafruit para saber como conseguirlo ve al siguiente link"
+        android:textAlignment="center"
 
         android:textColor="@color/black"
         android:textSize="17dp"
@@ -134,21 +134,22 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnconecta"
-        app:layout_constraintVertical_bias="0.532" />
+        app:layout_constraintVertical_bias="0.186" />
 
     <Button
         android:id="@+id/linkiokeyinfo"
+        style="@android:style/Widget.AbsListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:text="Que es?"
-        android:textSize="19dp"
-        style="@android:style/Widget.AbsListView"
         android:textColor="@color/black"
+        android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.788" />
+        app:layout_constraintVertical_bias="0.14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

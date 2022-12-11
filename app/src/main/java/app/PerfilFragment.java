@@ -67,6 +67,7 @@ public class PerfilFragment extends Fragment {
         String id= preferences.getString(KEY_ID,null);
         editor=preferences.edit();
 
+
         //DATOS DEL USUARIO
         String url="https://gallant-fermat.143-198-158-11.plesk.page/api/users/"+id;
      JsonObjectRequest peticion = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

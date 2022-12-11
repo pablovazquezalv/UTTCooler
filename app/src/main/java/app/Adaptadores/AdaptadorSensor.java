@@ -49,8 +49,10 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
 
         holder.setData(datossensores.get(position));
 
-
-
+        if(holder.txtsensor.getText().toString()=="led")
+        {
+            holder.txtdatos.setText("cm");
+        }
     }
 
     @Override
@@ -78,10 +80,8 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
             txtsensor.setText(sensores.getName());
             donutProgress.setText(sensores.getValue());
             txtdatos.setText(sensores.getValue());
-            String valor="60";
-
-
-            //   donutProgress.setDonut_progress(valor);
+           String valor=sensores.getValue();
+             donutProgress.setDonut_progress(valor);
         }
     }
 }

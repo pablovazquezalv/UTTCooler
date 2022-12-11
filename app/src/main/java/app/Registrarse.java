@@ -3,6 +3,7 @@ package app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,6 +31,11 @@ public class Registrarse extends AppCompatActivity {
     private RequestQueue requestQueue;
     Button btncrearcuenta;
     EditText inputnombre,inputapellido,inputtelefono,inputcorreo,inputcontrasena,inputusuario,inputred,inputcontraseña,inputiokey;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final String KEY_URL="url";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +44,9 @@ public class Registrarse extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         requestQueue = Singleton.getInstance(Registrarse.this).getRequestQueue();
+
+        preferences=this.getSharedPreferences(SHARE_PREF_KEY,MODE_PRIVATE);
+        editor=preferences.edit();
 
         inputnombre=findViewById(R.id.nombre);
         inputapellido=findViewById(R.id.apellidos);
@@ -114,11 +123,17 @@ public class Registrarse extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response)
                     {
-                        try {
+                        try
+                        {
                           int status= Integer.parseInt(response.getString("status"));
+                            String segundaurl = response.getString("url2");
+                            String enviarurl = segundaurl.replace("\\/","/");
+
                           if(status==201)
                           {
-                              Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion"+status, Toast.LENGTH_SHORT).show();
+                              editor.putString(KEY_URL,enviarurl);
+                              editor.apply();
+                              Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion"+enviarurl, Toast.LENGTH_SHORT).show();
                               startActivity(new Intent(getApplicationContext(), CodigoTel.class));
                           }
                         } catch (JSONException e)

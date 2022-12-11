@@ -15,7 +15,8 @@
         app:donut_circle_starting_degree="@integer/material_motion_duration_medium_2"
         app:donut_finished_color="@color/purple_500"
         app:donut_progress="0"
-        app:donut_text_color="@color/white"
+        app:donut_text_color="@color/black"
+        app:donut_text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.445"
@@ -43,20 +44,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/donaprogresosadafruit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/boton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/donaprogresosadafruit"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/led"
