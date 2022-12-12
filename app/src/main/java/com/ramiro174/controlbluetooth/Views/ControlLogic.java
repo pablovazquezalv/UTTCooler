@@ -12,7 +12,9 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,7 +49,9 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -61,6 +66,13 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
     DonutProgress donutProgress;
     int progress;
     private RequestQueue requestQueue;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final String KEY_ID="id";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
 
     //CUSTOM DIALOG
 
@@ -95,9 +107,14 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
 
+        preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
+        String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
+        String iokey= preferences.getString(KEY_IOKEY,null);
+        editor=preferences.edit();
+
         //BATERIA
         requestQueue = Singleton.getInstance(ControlLogic.this).getRequestQueue();
-        updateProgressBar();
+        updateProgressBar(usernameadafruit,iokey);
 
         //BLUETOOTH
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -168,11 +185,11 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    private void updateProgressBar()
+    private void updateProgressBar(String usernameadafruit,String iokey)
     {
 
 
-        String urlbateria="https://io.adafruit.com/api/v2/PVPabloVZ/dashboards?x-aio-key=aio_FfGV79J3FlMrFWskm0YLmEIdQ6qg";
+        String urlbateria="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards";
 
 
         donutProgress=findViewById(R.id.donutprogress);
@@ -184,7 +201,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
               //  donutProgress.setText(response.toString());
                 donutProgress.setDonut_progress(String.valueOf(response.toString()));
                 try {
-                    String userid=response.getJSONObject("user").getString("name");
+                    String userid=response.getString("name");
                     donutProgress.setText(userid);
                 } catch (JSONException e)
                 {
@@ -199,7 +216,17 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-AIO-Key",iokey);
+
+                return headers;
+            }
+
+        };
     }
 
     public void bluetoothOn()

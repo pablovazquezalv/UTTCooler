@@ -66,7 +66,6 @@ public class CodigoTel extends AppCompatActivity {
                     return;
                 }
 
-               // String urlcodigo="https://gallant-fermat.143-198-158-11.plesk.page/api/verificarCodigo";
 
                 JSONObject jsonbody= new JSONObject();
                 try
@@ -81,16 +80,16 @@ public class CodigoTel extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response)
                     {
-                       // try {
-                            //int status= Integer.parseInt(response.getString("status"));
-                            //if(status==201)
-                           // {
+                        try {
+                            int status= Integer.parseInt(response.getString("status"));
+                            if(status==200)
+                            {
                                 Toast.makeText( CodigoTel.this, "TU CUENTA FUE ACTIVADA, INICIA SESION"+url, Toast.LENGTH_SHORT).show();
-                              //  startActivity(new Intent(getApplicationContext(), Login.class));
-                            //}
-                       /* } catch (JSONException e) {
+                                startActivity(new Intent(getApplicationContext(), Login.class));
+                            }
+                        } catch (JSONException e) {
                             e.printStackTrace();
-                        }*/
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
