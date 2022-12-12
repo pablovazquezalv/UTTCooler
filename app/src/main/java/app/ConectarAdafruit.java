@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,6 +27,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import app.singleton.Singleton;
 
@@ -45,6 +49,8 @@ public class ConectarAdafruit extends AppCompatActivity {
     private static final String KEY_ID="id";
     private static final  String KEY_USERADAFRUIT="useradafruit";
     private static final String KEY_IOKEY="iokey";
+    private static final String KEY_TOKEN="token";
+
 
     String Active_Key;
     String Username;
@@ -66,6 +72,7 @@ public class ConectarAdafruit extends AppCompatActivity {
 
         preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String id= preferences.getString(KEY_ID,null);
+        String token= preferences.getString(KEY_TOKEN,null);
         editor=preferences.edit();
 
         buttonconectar.setOnClickListener(new View.OnClickListener()
@@ -119,7 +126,15 @@ public class ConectarAdafruit extends AppCompatActivity {
                         Toast.makeText( ConectarAdafruit.this, "error al actualizar los datos", Toast.LENGTH_SHORT).show();
                     }
 
-                });
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError
+                    {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Authorization","Bearer "+token);
+                        return headers;
+                    }
+                };
                 requestQueue.add(request3);
             }
         });

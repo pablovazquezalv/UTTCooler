@@ -64,6 +64,8 @@ public class CoolerFragment extends Fragment
     private static final String KEY_IOKEY="iokey";
     private static final String KEY_GROUP="namegroup";
     private static final String KEY_SENSOR="idsensor";
+    private static final String KEY_TOKEN="token";
+
 
 
     String iokey;
@@ -78,6 +80,7 @@ public class CoolerFragment extends Fragment
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
         String iokey= preferences.getString(KEY_IOKEY,null);
         String id= preferences.getString(KEY_ID,null);
+        String token= preferences.getString(KEY_TOKEN,null);
         editor=preferences.edit();
 
         Toast.makeText(getContext(), "username:"+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
@@ -90,7 +93,7 @@ public class CoolerFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1,GridLayoutManager.HORIZONTAL,false));
 
-        ObtenerHieleras(usernameadafruit,iokey,id);
+        ObtenerHieleras(usernameadafruit,iokey,id,token);
 
 
         //BOTON DE IR A AGREGAR UNA HIELERA NUEVA
@@ -107,7 +110,7 @@ public class CoolerFragment extends Fragment
     }
 
     //METODO PARA OBTENER HIELERAS
-    public void ObtenerHieleras(String usernameadafruit,String iokey,String id)
+    public void ObtenerHieleras(String usernameadafruit,String iokey,String id,String token)
     {
         String urldashboard="https://gallant-fermat.143-198-158-11.plesk.page/api/gruposs/"+id;
 
@@ -144,7 +147,15 @@ public class CoolerFragment extends Fragment
             {
 
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization","Bearer "+token);
+                return headers;
+            }
+        };
         requestQueue.add(request);
     }
     private void setRecyclewView(List<Hielera> hieleraList)

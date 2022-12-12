@@ -57,6 +57,7 @@ public class HieleraInformacion extends AppCompatActivity {
     private static final String KEY_IOKEY="iokey";
     private static final String KEY_SENSOR="idsensor";
     private static final String KEY_GROUP="namegroup";
+    private static final String KEY_TOKEN="token";
 
 
     Button btnON,btnOFF;
@@ -76,6 +77,7 @@ public class HieleraInformacion extends AppCompatActivity {
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
         String iokey= preferences.getString(KEY_IOKEY,null);
         String idsensor= preferences.getString(KEY_SENSOR,null);
+        String token= preferences.getString(KEY_TOKEN,null);
         String nombregroup=preferences.getString(KEY_GROUP,null);
         editor=preferences.edit();
 
@@ -162,11 +164,11 @@ public class HieleraInformacion extends AppCompatActivity {
          dashboards=hielera.getName();
         Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
 
-       informacionSobreHieleraEnEspecial(nombregroup,usernameadafruit,dashboards,iokey,idsensor);
+       informacionSobreHieleraEnEspecial(nombregroup,usernameadafruit,dashboards,iokey,idsensor,token);
        // lasData();
     }
 
-    public void informacionSobreHieleraEnEspecial(String nombregroup,String usernameadafruit,String dashboards,String iokey,String idsensor)
+    public void informacionSobreHieleraEnEspecial(String nombregroup,String usernameadafruit,String dashboards,String iokey,String idsensor,String token)
     {
         String url="https://gallant-fermat.143-198-158-11.plesk.page/api/feeds/"+idsensor;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -199,7 +201,16 @@ public class HieleraInformacion extends AppCompatActivity {
             {
 
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization","Bearer "+token);
+                return headers;
+            }
+        };
         requestQueue.add(request);
 
     }

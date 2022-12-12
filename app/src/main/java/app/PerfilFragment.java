@@ -110,7 +110,16 @@ public class PerfilFragment extends Fragment {
             {
 
             }
-        });
+        })
+     {
+         @Override
+         public Map<String, String> getHeaders() throws AuthFailureError
+         {
+             HashMap<String, String> headers = new HashMap<String, String>();
+             headers.put("Authorization","Bearer "+token);
+             return headers;
+         }
+     };
 
         requestQueue.add(peticion);
 
