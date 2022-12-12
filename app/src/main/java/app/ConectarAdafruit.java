@@ -109,14 +109,14 @@ public class ConectarAdafruit extends AppCompatActivity {
                         editor.putString(KEY_USERADAFRUIT,nombreadafruit);
                         editor.apply();
                         editor.putString(KEY_IOKEY,nombredeusuarioadafruit.getText().toString());
-                        Toast.makeText( ConectarAdafruit.this, "Se actualizaron sus credenciales"+nombreadafruit, Toast.LENGTH_SHORT).show();
+                        Toast.makeText( ConectarAdafruit.this, "Se actualizaron sus credenciales", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText( ConectarAdafruit.this, "ERROR"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText( ConectarAdafruit.this, "error al actualizar los datos", Toast.LENGTH_SHORT).show();
                     }
 
                 });

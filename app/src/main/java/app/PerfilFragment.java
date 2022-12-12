@@ -87,7 +87,7 @@ public class PerfilFragment extends Fragment {
                     editor.putString(KEY_USERADAFRUIT,Username);
                     editor.putString(KEY_IOKEY,Active_Key);
                     editor.apply();
-                    Toast.makeText(getContext(), "datos"+Username, Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getContext(), "datos"+Username, Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

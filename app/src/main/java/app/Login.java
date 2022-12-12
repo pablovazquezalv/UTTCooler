@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.ramiro174.controlbluetooth.Views.ControlLogic;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,7 +118,7 @@ public class Login extends AppCompatActivity {
                                 editor.putString(KEY_NAME,nombren);
                               editor.putString(KEY_ID,id);
                                 editor.apply();
-                                Toast.makeText( Login.this, "Credenciales"+response, Toast.LENGTH_SHORT).show();
+                                Toast.makeText( Login.this, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show();
                                 guardaSesion(checkBox.isChecked());
                                 startActivity(new Intent(getApplicationContext(), Menus.class));
                             }
@@ -131,7 +132,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText( Login.this, "Necesitas Activar tu cuenta"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText( Login.this, "Error al iniciar sesion", Toast.LENGTH_SHORT).show();
                     }
                 });
                 requestQueue.add(request);
@@ -157,8 +158,9 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(getApplicationContext(), Menus.class));
 
+                startActivity(new Intent(getApplicationContext(), Menus.class));
+               // startActivity(new Intent(getApplicationContext(), ControlLogic.class));
             }
         });
     }

@@ -133,7 +133,7 @@ public class Registrarse extends AppCompatActivity {
                           {
                               editor.putString(KEY_URL,enviarurl);
                               editor.apply();
-                              Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion"+enviarurl, Toast.LENGTH_SHORT).show();
+                              Toast.makeText(Registrarse.this, "Cuenta Creada,Requiere Activacion", Toast.LENGTH_SHORT).show();
                               startActivity(new Intent(getApplicationContext(), CodigoTel.class));
                           }
                         } catch (JSONException e)
@@ -147,7 +147,7 @@ public class Registrarse extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText(Registrarse.this, "Credenciales fallidas"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Registrarse.this, "Credenciales fallidas", Toast.LENGTH_SHORT).show();
                     }
                 });
                 requestQueue.add(request);

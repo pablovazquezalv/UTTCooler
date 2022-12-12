@@ -84,7 +84,7 @@ public class CodigoTel extends AppCompatActivity {
                             int status= Integer.parseInt(response.getString("status"));
                             if(status==200)
                             {
-                                Toast.makeText( CodigoTel.this, "TU CUENTA FUE ACTIVADA, INICIA SESION"+url, Toast.LENGTH_SHORT).show();
+                                Toast.makeText( CodigoTel.this, "TU CUENTA FUE ACTIVADA, INICIA SESION", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), Login.class));
                             }
                         } catch (JSONException e) {
@@ -95,7 +95,7 @@ public class CodigoTel extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText( CodigoTel.this, "ERROR"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText( CodigoTel.this, "ERROR AL ACTIVAR LA CUENTA", Toast.LENGTH_SHORT).show();
 
                     }
                 });
