@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,7 +34,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.Adaptadores.AdaptadorCarro;
 import app.Adaptadores.AdaptadorHielera;
@@ -65,6 +68,8 @@ public class AgregarNuevaHielera extends AppCompatActivity {
     private static final String KEY_ID="id";
     private static final  String KEY_USERADAFRUIT="useradafruit";
     private static final String KEY_IOKEY="iokey";
+    private static final String KEY_TOKEN="token";
+
 
 
     @Override
@@ -85,6 +90,7 @@ public class AgregarNuevaHielera extends AppCompatActivity {
         String id= preferences.getString(KEY_ID,null);
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
         String iokey= preferences.getString(KEY_IOKEY,null);
+        String token= preferences.getString(KEY_TOKEN,null);
         editor=preferences.edit();
 
         botonhielera.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +116,7 @@ public class AgregarNuevaHielera extends AppCompatActivity {
 
                 JSONObject jsonbody= new JSONObject();
                 try {
-                    jsonbody.put("name",inputnombre.getText());
+                    jsonbody.put("name",inputnombre.getText().toString().toLowerCase());
                     jsonbody.put("description","null");
                     jsonbody.put("user",id);
                     jsonbody.put("type_car",tipo);
@@ -126,25 +132,27 @@ public class AgregarNuevaHielera extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        try
-                        {
-                            String id= response.getString("id");
                           //  crearSensores(id,usernameadafruit,iokey);
-                            Toast.makeText( AgregarNuevaHielera.this, "Crear"+id, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
+                            Toast.makeText( AgregarNuevaHielera.this, "Carrito Creado", Toast.LENGTH_SHORT).show();
+
 
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText( AgregarNuevaHielera.this, "IOKEY CADUCADO"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText( AgregarNuevaHielera.this, ""+error, Toast.LENGTH_SHORT).show();
 
                     }
-                });
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError
+                    {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Authorization","Bearer "+token);
+                        return headers;
+                    }
+                };
 
                 requestQueue.add(request);
 

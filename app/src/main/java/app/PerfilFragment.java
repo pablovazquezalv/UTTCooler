@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.UTTCOOLER.Integradora.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,6 +27,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import app.singleton.Singleton;
 
@@ -41,6 +45,8 @@ public class PerfilFragment extends Fragment {
     private static final String KEY_ID="id";
     private static final  String KEY_USERADAFRUIT="useradafruit";
     private static final String KEY_IOKEY="iokey";
+    private static final String KEY_TOKEN="token";
+
 
     String nombren;
     String telefono;
@@ -65,12 +71,14 @@ public class PerfilFragment extends Fragment {
 
         preferences= getActivity().getSharedPreferences(SHARE_PREF_KEY,Context.MODE_PRIVATE);
         String id= preferences.getString(KEY_ID,null);
+        String token= preferences.getString(KEY_TOKEN,null);
         editor=preferences.edit();
 
 
         //DATOS DEL USUARIO
         String url="https://gallant-fermat.143-198-158-11.plesk.page/api/users/"+id;
-     JsonObjectRequest peticion = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+     JsonObjectRequest peticion = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>()
+     {
             @Override
             public void onResponse(JSONObject response)
             {
@@ -95,10 +103,11 @@ public class PerfilFragment extends Fragment {
 
 
             }
-        }, new Response.ErrorListener()
+            }, new Response.ErrorListener()
         {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
 
             }
         });
@@ -107,7 +116,8 @@ public class PerfilFragment extends Fragment {
 
 
 
-        btnconectar.setOnClickListener(new View.OnClickListener() {
+        btnconectar.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(getActivity(),ConectarAdafruit.class);
@@ -122,9 +132,43 @@ public class PerfilFragment extends Fragment {
             {
                 editor.putBoolean("sesion",false);
                 editor.apply();
-                Toast.makeText(getContext(), "la sesion fue cerrada", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(),Login.class));
+//                Toast.makeText(getContext(), "la sesion fue cerrada", Toast.LENGTH_SHORT).show();
 
+
+                String urlcerraresion="https://gallant-fermat.143-198-158-11.plesk.page/api/out";
+
+                JsonObjectRequest peticion= new JsonObjectRequest(Request.Method.POST, urlcerraresion, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        int status= 0;
+                        try {
+                            status = Integer.parseInt(response.getString("status"));
+                            if(status==200)
+                                Toast.makeText(getContext(), "LLEGO", Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(getActivity(),Login.class));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "ERORR"+error, Toast.LENGTH_SHORT).show();
+
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError
+                    {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Authorization","Bearer "+token);
+                        return headers;
+                    }
+                };
+                requestQueue.add(peticion);
             }
         });
         return view;

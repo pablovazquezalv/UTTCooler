@@ -46,6 +46,7 @@ public class Login extends AppCompatActivity {
     private static final String SHARE_PREF_KEY="mypref";
     private static final  String KEY_NAME="name";
     private static final String KEY_ID="id";
+    private static final String KEY_TOKEN="token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -114,9 +115,10 @@ public class Login extends AppCompatActivity {
                             {
                                 String nombren =response.getString("user_name");
                                  String id=response.getString("user_id");
-                                //response.getString("access_token");
+                                String token=response.getString("access_token");
                                 editor.putString(KEY_NAME,nombren);
                               editor.putString(KEY_ID,id);
+                                editor.putString(KEY_TOKEN,token);
                                 editor.apply();
                                 Toast.makeText( Login.this, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show();
                                 guardaSesion(checkBox.isChecked());

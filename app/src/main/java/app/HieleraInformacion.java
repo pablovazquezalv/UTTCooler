@@ -55,11 +55,16 @@ public class HieleraInformacion extends AppCompatActivity {
     private static final String SHARE_PREF_KEY="mypref";
     private static final  String KEY_USERADAFRUIT="useradafruit";
     private static final String KEY_IOKEY="iokey";
+    private static final String KEY_SENSOR="idsensor";
+    private static final String KEY_GROUP="namegroup";
 
+
+    Button btnON,btnOFF;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hielera_informacion);
+
         requestQueue = Singleton.getInstance(HieleraInformacion.this).getRequestQueue();
 
         sensoresList = new ArrayList<>();
@@ -70,7 +75,86 @@ public class HieleraInformacion extends AppCompatActivity {
         preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
         String iokey= preferences.getString(KEY_IOKEY,null);
+        String idsensor= preferences.getString(KEY_SENSOR,null);
+        String nombregroup=preferences.getString(KEY_GROUP,null);
         editor=preferences.edit();
+
+        btnON = findViewById(R.id.on);
+        btnOFF = findViewById(R.id.off);
+
+        JSONObject x = new JSONObject();
+
+
+        btnON.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    x.put("value",1);
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                String url2="https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/"+nombregroup+".desague/data";
+             //   String url = "https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/led/data";
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url2, x, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(HieleraInformacion.this,"Dato enviado",Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Toast.makeText(HieleraInformacion.this,"Error al enviar el dato",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("X-AIO-Key",iokey);
+                        return params;
+                    }
+                };
+                requestQueue.add(request);
+            }
+        });
+
+        btnOFF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    x.put("value",0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+               // String url = "https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/led/data";
+                String url2="https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/"+nombregroup+".desague/data";
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url2, x, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(HieleraInformacion.this,"Dato enviado",Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(HieleraInformacion.this,"Error al enviar el dato",Toast.LENGTH_SHORT).show();
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("X-AIO-Key",iokey);
+                        return params;
+                    }
+                };
+                requestQueue.add(request);
+            }
+        });
+
 
         //ENVIAR INFORMACION ENTRE ACTIVITYS
         hielera= (Hielera) getIntent().getExtras().getSerializable("datos");
@@ -78,19 +162,19 @@ public class HieleraInformacion extends AppCompatActivity {
          dashboards=hielera.getName();
         Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
 
-       informacionSobreHieleraEnEspecial(usernameadafruit,dashboards,iokey);
+       informacionSobreHieleraEnEspecial(nombregroup,usernameadafruit,dashboards,iokey,idsensor);
        // lasData();
     }
 
-    public void informacionSobreHieleraEnEspecial(String usernameadafruit,String dashboards,String iokey)
+    public void informacionSobreHieleraEnEspecial(String nombregroup,String usernameadafruit,String dashboards,String iokey,String idsensor)
     {
-        String url="https://gallant-fermat.143-198-158-11.plesk.page/api/feedgroup";
+        String url="https://gallant-fermat.143-198-158-11.plesk.page/api/feeds/"+idsensor;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
             {
                 JSONObject jsonObject;
-                for(int i=0;i<response.length();i++)
+                for(int i=0;i<response.length()-1;i++)
                 {
                     try
                     {
@@ -98,12 +182,13 @@ public class HieleraInformacion extends AppCompatActivity {
                         BlockFeed hielerass = new BlockFeed();
                         hielerass.setName(jsonObject.getString("name"));
                         sensornombre = jsonObject.getString("name");
-                       // sensoresList.add(hielerass);
-                        lasData(usernameadafruit,sensornombre,iokey);
+                        //  sensoresList.add(hielerass);
+                         lasData(nombregroup,usernameadafruit,sensornombre,iokey);
                     } catch (JSONException e)
                     {
                         e.printStackTrace();
                     }
+                   // setRecyclewView(sensoresList);
                 }
             }
 
@@ -114,36 +199,24 @@ public class HieleraInformacion extends AppCompatActivity {
             {
 
             }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", iokey);
-
-                return headers;
-            }
-
-        };
+        });
         requestQueue.add(request);
 
     }
 
-    public void lasData(String usernameadafruit,String sensornombre,String iokey)
+    public void lasData(String nombregroup,String usernameadafruit,String sensornombre,String iokey)
     {
-        String urllasdata ="https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/"+sensornombre+"/data/last";
+        String urllasdata ="https://io.adafruit.com/api/v2/"+usernameadafruit+"/feeds/"+nombregroup+"."+sensornombre+"/data/last?x-aio-key="+iokey;
 
         JsonObjectRequest requestdos = new JsonObjectRequest(Request.Method.GET, urllasdata, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response)
             {
                 try {
-
                     BlockFeed hielerass = new BlockFeed();
                     hielerass.setName(sensornombre);
                     hielerass.setvalue(response.getString("value"));
-                   Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
                    sensoresList.add(hielerass);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -156,17 +229,7 @@ public class HieleraInformacion extends AppCompatActivity {
             public void onErrorResponse(VolleyError error)
             {
             }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key", iokey);
-
-                return headers;
-            }
-
-        };
+        });
 
         requestQueue.add(requestdos);
 

@@ -13,7 +13,7 @@
         android:layout_width="97dp"
         android:layout_height="98dp"
         app:donut_circle_starting_degree="@integer/material_motion_duration_medium_2"
-        app:donut_finished_color="@color/purple_500"
+        app:donut_finished_color="@color/naranjafondo"
         app:donut_progress="0"
         app:donut_text_color="@color/black"
         app:donut_text=""

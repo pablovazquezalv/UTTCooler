@@ -43,6 +43,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.Adaptadores.AdaptadorHielera;
+import app.Clases_adafruit.BlockFeed;
 import app.Clases_adafruit.Hielera;
 import app.Clases_adafruit.ListaHielera;
 import app.singleton.Singleton;
@@ -53,14 +54,16 @@ public class CoolerFragment extends Fragment
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private List<Hielera> hieleraList;
-    private List<ListaHielera> listaHieleras;
     AdaptadorHielera adapter;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private static final String SHARE_PREF_KEY="mypref";
+    private static final String KEY_ID="id";
     private static final  String KEY_USERADAFRUIT="useradafruit";
     private static final String KEY_IOKEY="iokey";
+    private static final String KEY_GROUP="namegroup";
+    private static final String KEY_SENSOR="idsensor";
 
 
     String iokey;
@@ -74,6 +77,7 @@ public class CoolerFragment extends Fragment
         preferences= getActivity().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
         String iokey= preferences.getString(KEY_IOKEY,null);
+        String id= preferences.getString(KEY_ID,null);
         editor=preferences.edit();
 
         Toast.makeText(getContext(), "username:"+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
@@ -81,12 +85,12 @@ public class CoolerFragment extends Fragment
         Button btnhielera=view.findViewById(R.id.hielera);
         requestQueue = Singleton.getInstance(view.getContext()).getRequestQueue();
         hieleraList = new ArrayList<>();
-        listaHieleras= new ArrayList<>();
+
         recyclerView=view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1,GridLayoutManager.HORIZONTAL,false));
 
-        ObtenerHieleras(usernameadafruit,iokey);
+        ObtenerHieleras(usernameadafruit,iokey,id);
 
 
         //BOTON DE IR A AGREGAR UNA HIELERA NUEVA
@@ -103,37 +107,52 @@ public class CoolerFragment extends Fragment
     }
 
     //METODO PARA OBTENER HIELERAS
-    public void ObtenerHieleras(String usernameadafruit,String iokey)
+    public void ObtenerHieleras(String usernameadafruit,String iokey,String id)
     {
-        String urldashboard="https://gallant-fermat.143-198-158-11.plesk.page/api/cars";
+        String urldashboard="https://gallant-fermat.143-198-158-11.plesk.page/api/gruposs/"+id;
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urldashboard, null, new Response.Listener<JSONObject>() {
+        Toast.makeText(getContext(), "ID"+id, Toast.LENGTH_SHORT).show();
+        JsonArrayRequest request= new JsonArrayRequest(Request.Method.GET, urldashboard, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response)
+            public void onResponse(JSONArray response)
             {
-                Gson gson =new Gson();
-                ListaHielera winner=gson.fromJson(response.toString(),ListaHielera.class);
-                adapter= new AdaptadorHielera(getContext(),winner.getData());
-                recyclerView.setAdapter(adapter);
+                JSONObject jsonObject;
+                for(int i=0;i<response.length();i++)
+                {
+                    try
+                    {
+                        jsonObject=response.getJSONObject(i);
+                        Hielera hielerass = new Hielera();
+                        hielerass.setName(jsonObject.getString("name"));
+                        String nombregrupo=jsonObject.getString("name");
+                        String idsensor=jsonObject.getString("id");
+                        editor.putString(KEY_SENSOR,idsensor);
+                        editor.putString(KEY_GROUP,nombregrupo);
+                        editor.apply();
+                        hieleraList.add(hielerass);
+                        setRecyclewView(hieleraList);
+                    } catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             }
+
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
 
             }
         });
         requestQueue.add(request);
-
     }
-
-    //INSTANCIAR RECYLCEW VIEW CON ADAPTADOR
     private void setRecyclewView(List<Hielera> hieleraList)
     {
         AdaptadorHielera adaptadorHielera = new AdaptadorHielera(getContext(),hieleraList);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1,GridLayoutManager.HORIZONTAL,false));
         recyclerView.setAdapter(adaptadorHielera);
     }
-
 
 }
 
