@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:button="@drawable/img_checkbox"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Recordar mi sesion"
+        android:text="NO Recordar mi sesion"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"

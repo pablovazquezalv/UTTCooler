@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import app.Adaptadores.AdaptadorCarro;
@@ -54,6 +57,16 @@ public class AgregarNuevaHielera extends AppCompatActivity {
     int tipo=0;
     Button botonhielera;
     EditText inputnombre;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private static final String SHARE_PREF_KEY="mypref";
+    private static final  String KEY_NAME="name";
+    private static final String KEY_ID="id";
+    private static final  String KEY_USERADAFRUIT="useradafruit";
+    private static final String KEY_IOKEY="iokey";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -68,7 +81,11 @@ public class AgregarNuevaHielera extends AppCompatActivity {
         inputnombre=findViewById(R.id.nombrehielera);
         botonhielera=findViewById(R.id.botoncrearhielera);
 
-
+        preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
+        String id= preferences.getString(KEY_ID,null);
+        String usernameadafruit= preferences.getString(KEY_USERADAFRUIT,null);
+        String iokey= preferences.getString(KEY_IOKEY,null);
+        editor=preferences.edit();
 
         botonhielera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,38 +94,54 @@ public class AgregarNuevaHielera extends AppCompatActivity {
                 String seleccionado=spinner.getSelectedItem().toString();
                 if(seleccionado.equals("Hielera"))
                 {
-                    int tipo=1;
+                     tipo=1;
                 }
                 if(seleccionado.equals("Aspiradora"))
                 {
-                    int tipo=2;
+                     tipo=2;
                 }
                 if(seleccionado.equals("Basurero"))
                 {
-                    int tipo=3;
+                     tipo=3;
                 }
 
 
-                String urlgroup="https://gallant-fermat.143-198-158-11.plesk.page/api/group";
+                String urlgroup="https://gallant-fermat.143-198-158-11.plesk.page/api/car";
 
                 JSONObject jsonbody= new JSONObject();
                 try {
                     jsonbody.put("name",inputnombre.getText());
-
+                    jsonbody.put("description","null");
+                    jsonbody.put("user",id);
+                    jsonbody.put("type_car",tipo);
+                    jsonbody.put("aio_key",iokey);
+                    jsonbody.put("username",usernameadafruit);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
+                 //  Toast.makeText( AgregarNuevaHielera.this, "RESPONSE"+jsonbody, Toast.LENGTH_SHORT).show();
 
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlgroup, jsonbody, new Response.Listener<JSONObject>() {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlgroup, jsonbody, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                            String id= response.getString("id");
+                          //  crearSensores(id,usernameadafruit,iokey);
+                            Toast.makeText( AgregarNuevaHielera.this, "Crear"+id, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
 
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
+                        Toast.makeText( AgregarNuevaHielera.this, "IOKEY CADUCADO"+error, Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -119,12 +152,54 @@ public class AgregarNuevaHielera extends AppCompatActivity {
             }
         });
 
-
-
     }
 
 
+    public void crearSensores(String id,String usernameadafruit,String iokey)
+    {
 
+
+        String arreglosensores[]= new String[4];
+        arreglosensores[0]="temperatura";
+        arreglosensores[1]="distancia";
+        arreglosensores[2]="nivelagua";
+        arreglosensores[3]="bateria";
+
+        JSONObject jsonbody= new JSONObject();
+        try {
+
+
+                jsonbody.put("name","temperatura");
+                jsonbody.put("aio_key",iokey);
+                jsonbody.put("username",usernameadafruit);
+                jsonbody.put("car",id);
+                jsonbody.put("group_key",inputnombre.getText());
+
+
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        String urlsensores="https://gallant-fermat.143-198-158-11.plesk.page/api/feed";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlsensores, jsonbody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Toast.makeText( AgregarNuevaHielera.this, "Crear"+response, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText( AgregarNuevaHielera.this, "ErROR"+error, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        requestQueue.add(request);
+
+    }
 
 
     /*public void obtenerSensores()

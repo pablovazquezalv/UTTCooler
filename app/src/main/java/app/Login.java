@@ -160,7 +160,7 @@ public class Login extends AppCompatActivity {
             {
 
                 startActivity(new Intent(getApplicationContext(), Menus.class));
-               // startActivity(new Intent(getApplicationContext(), ControlLogic.class));
+                //startActivity(new Intent(getApplicationContext(), ControlLogic.class));
             }
         });
     }
