@@ -23,9 +23,9 @@ public class AdaptadorCarro extends RecyclerView.Adapter<AdaptadorCarro.MyViewHo
     private Context context;
     private List<Carro> datoscarros;
 
-    public AdaptadorCarro(List<Carro> datoscarros)
+    public AdaptadorCarro(Context context,List<Carro> datoscarros)
     {
-      //  this.context=context;
+        this.context=context;
         this.datoscarros=datoscarros;
     }
 
@@ -37,10 +37,9 @@ public class AdaptadorCarro extends RecyclerView.Adapter<AdaptadorCarro.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorCarro.MyViewHolder holder, int position) {
-     //   holder.setData(datoscarros.get(position));
-        String name=datoscarros.get(position).getName();
-        holder.titulocarro.setText(name);
+    public void onBindViewHolder(@NonNull AdaptadorCarro.MyViewHolder holder, int position)
+    {
+        holder.setData(datoscarros.get(position));
     }
 
     @Override
@@ -50,19 +49,18 @@ public class AdaptadorCarro extends RecyclerView.Adapter<AdaptadorCarro.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        RadioButton tipocarro;
-        TextView titulocarro,sensores;
-        public MyViewHolder(final View itemView) {
+
+        TextView nombrehielera,sensores;
+        public MyViewHolder(final View itemView)
+        {
             super(itemView);
-            tipocarro=itemView.findViewById(R.id.tipocarro);
-            titulocarro=itemView.findViewById(R.id.nombrehielera);
+            nombrehielera=itemView.findViewById(R.id.nombrehielera);
             sensores=itemView.findViewById(R.id.sensores);
         }
-      /*  public void setData(Carro carro)
+       public void setData(Carro carro)
         {
-            tipocarro.setText(carro.getType_car());
-            sensores.setText(carro.getGroup());
-            titulocarro.setText(carro.getName());
-        }*/
+            nombrehielera.setText(carro.getId());
+            sensores.setText(carro.getName());
+        }
     }
 }

@@ -34,7 +34,6 @@ public class AdaptadorHielera extends RecyclerView.Adapter<AdaptadorHielera.MyVi
         this.datoshielera=datoshielera;
     }
 
-
     @NonNull
     @Override
     public AdaptadorHielera.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,13 +45,12 @@ public class AdaptadorHielera extends RecyclerView.Adapter<AdaptadorHielera.MyVi
     public void onBindViewHolder(@NonNull AdaptadorHielera.MyViewHolder holder, int position) {
       final Hielera item=datoshielera.get(position);
         holder.setData(datoshielera.get(position));
-     Intent accion=datoshielera.get(position).getAccion();
+
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(context, HieleraInformacion.class);
                  i.putExtra("datos",item);
-
 
                 context.startActivity(i);
             }
@@ -80,21 +78,8 @@ public class AdaptadorHielera extends RecyclerView.Adapter<AdaptadorHielera.MyVi
 
         public void setData(Hielera hielera)
         {
-
             name.setText(hielera.getName());
         }
     }
 }
-/*
-View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_hielera, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(itemView);
-        viewHolder.view_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(context, HieleraInformacion.class);
-                i.putExtra("name",datoshielera.get(viewHolder.getAdapterPosition()).getName());
-                context.startActivity(i);
 
-            }
-        });
-        return viewHolder;*/

@@ -84,7 +84,7 @@ public class HieleraInformacion extends AppCompatActivity {
 
     public void informacionSobreHieleraEnEspecial(String usernameadafruit,String dashboards,String iokey)
     {
-        String url="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards/"+dashboards+"/blocks";
+        String url="https://gallant-fermat.143-198-158-11.plesk.page/api/feedgroup";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
@@ -98,7 +98,6 @@ public class HieleraInformacion extends AppCompatActivity {
                         BlockFeed hielerass = new BlockFeed();
                         hielerass.setName(jsonObject.getString("name"));
                         sensornombre = jsonObject.getString("name");
-
                        // sensoresList.add(hielerass);
                         lasData(usernameadafruit,sensornombre,iokey);
                     } catch (JSONException e)
@@ -145,7 +144,6 @@ public class HieleraInformacion extends AppCompatActivity {
                     hielerass.setName(sensornombre);
                     hielerass.setvalue(response.getString("value"));
                    Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
-
                    sensoresList.add(hielerass);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,8 +153,8 @@ public class HieleraInformacion extends AppCompatActivity {
 
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
+            public void onErrorResponse(VolleyError error)
+            {
             }
         }){
             @Override

@@ -6,54 +6,12 @@ import java.io.Serializable;
 
 public class Hielera implements Serializable
 {
-    public int id;
     public String name;
-    public String key;
-    public String visibility;
-    private Intent accion;
+    public String description;
 
-    public Intent getAccion() {
-        return accion;
-    }
-
-    public void setAccion(Intent accion) {
-        this.accion = accion;
-    }
-
-    public Hielera(int id, String name,String key,String visibility)
-    {
-        this.id=id;
-        this.name=name;
-        this.key=key;
-        this.visibility=visibility;
-    }
-
-    public Hielera() {
-
-    }
-
-    public String getVisibility() {
-        return visibility;
-    }
-
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Hielera(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public String getName() {
@@ -62,5 +20,13 @@ public class Hielera implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

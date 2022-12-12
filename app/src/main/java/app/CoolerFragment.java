@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -43,6 +44,7 @@ import java.util.TimerTask;
 
 import app.Adaptadores.AdaptadorHielera;
 import app.Clases_adafruit.Hielera;
+import app.Clases_adafruit.ListaHielera;
 import app.singleton.Singleton;
 
 
@@ -51,6 +53,8 @@ public class CoolerFragment extends Fragment
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private List<Hielera> hieleraList;
+    private List<ListaHielera> listaHieleras;
+    AdaptadorHielera adapter;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -77,7 +81,11 @@ public class CoolerFragment extends Fragment
         Button btnhielera=view.findViewById(R.id.hielera);
         requestQueue = Singleton.getInstance(view.getContext()).getRequestQueue();
         hieleraList = new ArrayList<>();
+        listaHieleras= new ArrayList<>();
         recyclerView=view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1,GridLayoutManager.HORIZONTAL,false));
+
         ObtenerHieleras(usernameadafruit,iokey);
 
 
@@ -97,48 +105,23 @@ public class CoolerFragment extends Fragment
     //METODO PARA OBTENER HIELERAS
     public void ObtenerHieleras(String usernameadafruit,String iokey)
     {
-        String urldashboard="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards";
+        String urldashboard="https://gallant-fermat.143-198-158-11.plesk.page/api/cars";
 
-        JsonArrayRequest request = new JsonArrayRequest(urldashboard, new Response.Listener<JSONArray>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urldashboard, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response)
+            public void onResponse(JSONObject response)
             {
-                JSONObject jsonObject;
-                for(int i=0;i<response.length();i++)
-                {
-                    try
-                    {
-                        jsonObject=response.getJSONObject(i);
-                        Hielera hielerass = new Hielera();
-                        jsonObject.getString("id");
-                        hielerass.setName(jsonObject.getString("name"));
-                        hieleraList.add(hielerass);
-                    } catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                setRecyclewView(hieleraList);
+                Gson gson =new Gson();
+                ListaHielera winner=gson.fromJson(response.toString(),ListaHielera.class);
+                adapter= new AdaptadorHielera(getContext(),winner.getData());
+                recyclerView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
 
             }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("X-AIO-Key",iokey);
-
-                return headers;
-            }
-
-        };
+        });
         requestQueue.add(request);
 
     }
