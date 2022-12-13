@@ -49,7 +49,7 @@ public class CodigoTel extends AppCompatActivity {
         preferences= getApplicationContext().getSharedPreferences(SHARE_PREF_KEY, Context.MODE_PRIVATE);
         String url= preferences.getString(KEY_URL,null);
         editor=preferences.edit();
-        Toast.makeText(this, "url"+url, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "url"+url, Toast.LENGTH_SHORT).show();
         botoncreocuenta=(Button) findViewById(R.id.creocuentas);
         codigoverificacion=findViewById(R.id.codigodeverificacion);
 
