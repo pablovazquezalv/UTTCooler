@@ -7,6 +7,18 @@
     android:background="@color/white"
     tools:context="app.AgregarNuevaHielera">
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="448dp"
+        android:layout_height="388dp"
+        app:layout_constraintBottom_toTopOf="@+id/botoncrearhielera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bolas3" />
+
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -62,41 +74,37 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombrehielera"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.123" />
 
     <Button
         android:id="@+id/botoncrearhielera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@android:style/Widget.AbsListView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="28dp"
         android:backgroundTint="@color/white"
         android:text="Crear"
-        android:textColor="@color/black"
 
+        android:textColor="@color/black"
         android:textSize="18dp"
-        style="@android:style/Widget.AbsListView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
 
         />
-
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="324dp"
         android:layout_height="84dp"
-        android:padding="10dp"
-        android:layout_marginBottom="248dp"
+        android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toTopOf="@+id/botoncrearhielera"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

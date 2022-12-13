@@ -103,7 +103,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Es una una aplicacion que esta destinada ser escalable,asi su funcionamiento principal es ver los sensores y su funcionamiento de ellos"
+        android:text="Es una una aplicacion que esta destinada al seguimiento,al de distintoss de aparatos electronicas de la marca CoolerUTT"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView"

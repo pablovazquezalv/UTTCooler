@@ -49,12 +49,15 @@
         android:id="@+id/imageView3"
         android:layout_width="177dp"
         android:layout_height="162dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintHorizontal_bias="0.435"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
+        app:layout_constraintVertical_bias="0.498"
         app:srcCompat="@mipmap/logo_sin_fondo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

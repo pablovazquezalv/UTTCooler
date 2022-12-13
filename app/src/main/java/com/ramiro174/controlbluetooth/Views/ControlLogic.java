@@ -114,7 +114,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
 
         //BATERIA
         requestQueue = Singleton.getInstance(ControlLogic.this).getRequestQueue();
-        updateProgressBar(usernameadafruit,iokey);
+       // updateProgressBar(usernameadafruit,iokey);
 
         //BLUETOOTH
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -192,7 +192,7 @@ public class ControlLogic extends AppCompatActivity implements AdapterView.OnIte
         String urlbateria="https://io.adafruit.com/api/v2/"+usernameadafruit+"/dashboards";
 
 
-        donutProgress=findViewById(R.id.donutprogress);
+      //  donutProgress=findViewById(R.id.donutprogress);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlbateria, null, new Response.Listener<JSONObject>() {
             @Override

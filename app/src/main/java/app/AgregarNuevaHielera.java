@@ -141,8 +141,7 @@ public class AgregarNuevaHielera extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText( AgregarNuevaHielera.this, ""+error, Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText( AgregarNuevaHielera.this, "error al crear", Toast.LENGTH_SHORT).show();
                     }
                 }){
                     @Override

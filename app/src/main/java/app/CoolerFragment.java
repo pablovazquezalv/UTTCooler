@@ -83,7 +83,7 @@ public class CoolerFragment extends Fragment
         String token= preferences.getString(KEY_TOKEN,null);
         editor=preferences.edit();
 
-        Toast.makeText(getContext(), "username:"+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "username:"+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
 
         Button btnhielera=view.findViewById(R.id.hielera);
         requestQueue = Singleton.getInstance(view.getContext()).getRequestQueue();
@@ -114,7 +114,7 @@ public class CoolerFragment extends Fragment
     {
         String urldashboard="https://gallant-fermat.143-198-158-11.plesk.page/api/gruposs/"+id;
 
-        Toast.makeText(getContext(), "ID"+id, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(), "ID"+id, Toast.LENGTH_SHORT).show();
         JsonArrayRequest request= new JsonArrayRequest(Request.Method.GET, urldashboard, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)

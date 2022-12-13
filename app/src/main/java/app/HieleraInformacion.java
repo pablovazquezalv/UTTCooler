@@ -162,7 +162,7 @@ public class HieleraInformacion extends AppCompatActivity {
         hielera= (Hielera) getIntent().getExtras().getSerializable("datos");
         txtinfo.setText(hielera.getName());
          dashboards=hielera.getName();
-        Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "NOMBRE DASHBOARD:"+dashboards+usernameadafruit+iokey, Toast.LENGTH_SHORT).show();
 
        informacionSobreHieleraEnEspecial(nombregroup,usernameadafruit,dashboards,iokey,idsensor,token);
        // lasData();
@@ -227,7 +227,7 @@ public class HieleraInformacion extends AppCompatActivity {
                     BlockFeed hielerass = new BlockFeed();
                     hielerass.setName(sensornombre);
                     hielerass.setvalue(response.getString("value"));
-                    Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HieleraInformacion.this, "DATOS"+response, Toast.LENGTH_SHORT).show();
                    sensoresList.add(hielerass);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -297,6 +297,11 @@ public class HieleraInformacion extends AppCompatActivity {
 
 
     }
+
+
+
+
+
     public void lastValue()
     {
         String url="https://io.adafruit.com/api/v2/PVPabloVZ/feeds/"+feedkey+"/data/last?x-aio-key=aio_MHEd17XhEuDEUSrDrXVMJX6DjXkG";

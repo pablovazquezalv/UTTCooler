@@ -154,7 +154,7 @@ public class PerfilFragment extends Fragment {
                         try {
                             status = Integer.parseInt(response.getString("status"));
                             if(status==200)
-                                Toast.makeText(getContext(), "LLEGO", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "adios", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(getActivity(),Login.class));
                         } catch (JSONException e) {
