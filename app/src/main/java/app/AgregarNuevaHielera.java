@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -130,14 +131,26 @@ public class AgregarNuevaHielera extends AppCompatActivity {
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlgroup, jsonbody, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-
+                    public void onResponse(JSONObject response)
+                    {
                           //  crearSensores(id,usernameadafruit,iokey);
-                            Toast.makeText( AgregarNuevaHielera.this, "Carrito Creado", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), Hielera.class));
+                      int status=0;
+                        try {
+                            status = Integer.parseInt(response.getString("status"));
+                            if(status==200)
+                            {
+                                Toast.makeText( AgregarNuevaHielera.this, "Carrito Creado", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), CoolerFragment.class));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
 
                     }
-                }, new Response.ErrorListener() {
+                }, new Response.ErrorListener()
+                {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {

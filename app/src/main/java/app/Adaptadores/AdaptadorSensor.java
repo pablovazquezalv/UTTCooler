@@ -49,11 +49,10 @@ public class AdaptadorSensor extends RecyclerView.Adapter<AdaptadorSensor.MyView
 
         holder.setData(datossensores.get(position));
 
-        if(holder.txtsensor.getText().toString()=="led")
-        {
-            holder.txtdatos.setText("cm");
-        }
+
     }
+
+
 
     @Override
     public int getItemCount() {

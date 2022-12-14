@@ -47,5 +47,6 @@ dependencies {
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'io.github.controlwear:virtualjoystick:1.10.1'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
 }

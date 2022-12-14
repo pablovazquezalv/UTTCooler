@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.Clases_adafruit.Hielera;
 import app.singleton.Singleton;
 
 
@@ -116,7 +117,18 @@ public class ConectarAdafruit extends AppCompatActivity {
                         editor.putString(KEY_USERADAFRUIT,nombreadafruit);
                         editor.apply();
                         editor.putString(KEY_IOKEY,nombredeusuarioadafruit.getText().toString());
-                        Toast.makeText( ConectarAdafruit.this, "Se actualizaron sus credenciales", Toast.LENGTH_SHORT).show();
+                        int status= 0;
+                        try {
+                            status = Integer.parseInt(response.getString("status"));
+                            if(status==200)
+                            {
+                                Toast.makeText(ConectarAdafruit.this, "Se actualizaron sus credenciales", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), Hielera.class));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener()
                 {
